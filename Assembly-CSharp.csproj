@@ -53,6 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\MenuManager.cs" />
      <Compile Include="Assets\Scripts\Rule.cs" />
+     <Compile Include="Assets\Scripts\Scenes.cs" />
      <Compile Include="Assets\Scripts\SentenceGenerator.cs" />
      <Compile Include="Assets\Scripts\TurtleController.cs" />
  <Reference Include="UnityEngine.UI">
