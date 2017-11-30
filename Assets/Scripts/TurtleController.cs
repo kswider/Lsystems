@@ -13,9 +13,10 @@ public class TurtleController : MonoBehaviour
     private Vector3 _lastPosition;
     private Vector3 _newPosition;
 
-    int _gamma;
-    int _countOfRepeat;
+    private int _gamma;
+    private int _countOfRepeat;
     private string _sentenceToDraw;
+    private static Dictionary<char, string> parameters;
     private int up = 0;
 
     private int direction = 0;
@@ -29,9 +30,17 @@ public class TurtleController : MonoBehaviour
         _gamma = 90;
         _countOfRepeat = 4;
         _sentenceGenerator = new SentenceGenerator();
-        _sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
+        //_sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
 
-        _sentenceToDraw = " F-F-F-F";
+        _sentenceToDraw = Scenes.getSceneStartingSentence();
+        // ładowanie reguł z poprzedniej sceny i dodawanie do generatora
+        parameters = Scenes.getSceneRules();
+        foreach(KeyValuePair<char, string> entry in parameters)
+        {
+            _sentenceGenerator.Rules.Add(new Rule(entry.Key,entry.Value));
+        }
+        
+        
         for(int i = 0; i < _countOfRepeat; i++)
         {
             _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);

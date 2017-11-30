@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,24 +9,36 @@ public class MenuManager : MonoBehaviour {
 
     [SerializeField]
     private Button _startButton;
-    // Use this for initialization
+    [SerializeField]
+    private Button _addRuleButton;
+    [SerializeField]
+    private InputField _startingSequenceInputField;
+    [SerializeField]
+    private InputField _beforeInputField;
+    [SerializeField]
+    private InputField _afterInputField;
 
-    public string stringToEdit = "Hello World";
-    void OnGUI()
-    {
-        stringToEdit = GUI.TextField(new Rect(10, 10, 200, 20), stringToEdit, 25);
-    }
+    // Use this for initialization
     void Start () {
         _startButton.onClick.AddListener(StartDrawing);
+        _addRuleButton.onClick.AddListener(AddRule);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 		
 	}
 
     void StartDrawing()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        Scenes.setSceneStartingSentence(_startingSequenceInputField.text);
+        Scenes.Load("main");
+    }
+
+    private void AddRule()
+    {
+        Scenes.addRule(_beforeInputField.text[0], _afterInputField.text);
+        _beforeInputField.text = "";
+        _afterInputField.text = "";
     }
 }
