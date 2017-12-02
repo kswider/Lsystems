@@ -13,14 +13,14 @@ public class TurtleController : MonoBehaviour
     private Vector3 _lastPosition;
     private Vector3 _newPosition;
 
-    private int _gamma;
+    private Vector3 _direction = new Vector3(0, 0.25f, 0);
+    private int _gamma = 90;
     private int _countOfRepeat;
     private string _sentenceToDraw;
     private static Dictionary<char, string> parameters;
-    private int up = 0;
 
-    private int direction = 0;
     private LineRenderer _lineRenderer;
+
     // Use this for initialization
     void Start()
     {
@@ -40,14 +40,12 @@ public class TurtleController : MonoBehaviour
             _sentenceGenerator.Rules.Add(new Rule(entry.Key,entry.Value));
         }
         
-        
+        // generowanie ciągu
         for(int i = 0; i < _countOfRepeat; i++)
         {
             _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);
         }
 
-        //InvokeRepeating("Draw", 2f, 0.01f);
-        //_lineRenderer.positionCount = _sentenceToDraw.Length;
         int position = 1;
         foreach(char letter in _sentenceToDraw)
         {
@@ -59,18 +57,10 @@ public class TurtleController : MonoBehaviour
                     position++;
                     break;
                 case '+':
-                    if (direction == 3)
-                        direction = 0;
-                    else
-                        direction++;
-                    //_lineRenderer.positionCount--;
+                    _direction =  Quaternion.Euler(0,0, _gamma) * _direction;
                     break;
                 case '-':
-                    if (direction == 0)
-                        direction = 3;
-                    else
-                        direction--;
-                    //_lineRenderer.positionCount--;
+                    _direction = Quaternion.Euler(0, 0, -_gamma) * _direction;
                     break;
             }
         }
@@ -78,63 +68,10 @@ public class TurtleController : MonoBehaviour
     
     private void DrawLine(int index)
     {
-        switch (direction)
-        {
-            case 0:
-                _newPosition = _lastPosition;
-                _newPosition.y += .25f;
-                _lineRenderer.SetPosition(index, _newPosition);
-                //_turtle.transform.position = _newPosition;
-                _lastPosition = _newPosition;
-                break;
-            case 1:
-                _newPosition = _lastPosition;
-                _newPosition.x += .25f;
-                _lineRenderer.SetPosition(index, _newPosition);
-                //_turtle.transform.position = _newPosition;
-                _lastPosition = _newPosition;
-                break;
-            case 2:
-                _newPosition = _lastPosition;
-                _newPosition.y -= .25f;
-                _lineRenderer.SetPosition(index, _newPosition);
-                //_turtle.transform.position = _newPosition;
-                _lastPosition = _newPosition;
-                break;
-            case 3:
-                _newPosition = _lastPosition;
-                _newPosition.x -= .25f;
-                _lineRenderer.SetPosition(index, _newPosition);
-                //_turtle.transform.position = _newPosition;
-                _lastPosition = _newPosition;
-                break;
-        }
-    }
-    
-    private void Draw()
-    {
-        if (_sentenceToDraw.Length > 0)
-        {
-            switch (_sentenceToDraw[0])
-            {
-                case 'F':
-                    DrawLine(0);
-                    break;
-                case '+':
-                    if (direction == 3)
-                        direction = 0;
-                    else
-                        direction++;
-                    break;
-                case '-':
-                    if (direction == 0)
-                        direction = 3;
-                    else
-                        direction--;
-                    break;
-            }
-            _sentenceToDraw = _sentenceToDraw.Remove(0, 1);
-        }
-    }
+        _newPosition = _lastPosition;
+        _newPosition += _direction;
+        _lineRenderer.SetPosition(index, _newPosition);
+        _lastPosition = _newPosition;
+    }  
 
 }
