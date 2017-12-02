@@ -27,8 +27,8 @@ public class TurtleController : MonoBehaviour
         _lineRenderer = _turtle.GetComponent<LineRenderer>();
         _lastPosition = _turtle.transform.position;
 
-        _gamma = 22.5f;
-        _countOfRepeat = 4;
+        _gamma = 25.7f;
+        _countOfRepeat = 7;
         _sentenceGenerator = new SentenceGenerator();
         //_sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
 

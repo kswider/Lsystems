@@ -18,16 +18,18 @@ namespace Assets.Scripts
             string nextSentence = "";
             foreach (char letter in input)
             {
+                bool applicated = false;
                 foreach (Rule rule in Rules)
                 {
                     if (letter.Equals(rule.before))
                     {
                         nextSentence += rule.after;
+                        applicated = true;
                         break;
                     }
-                    else
-                        nextSentence += letter;
                 }
+                if (!applicated)
+                    nextSentence += letter;
             }
             return nextSentence;
         }
