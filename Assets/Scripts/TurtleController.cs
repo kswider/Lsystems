@@ -14,7 +14,7 @@ public class TurtleController : MonoBehaviour
     private Vector3 _newPosition;
 
     private Vector3 _direction = new Vector3(0, 0.25f, 0);
-    private int _gamma = 90;
+    private float _gamma;
     private int _countOfRepeat;
     private string _sentenceToDraw;
     private static Dictionary<char, string> parameters;
@@ -27,7 +27,7 @@ public class TurtleController : MonoBehaviour
         _lineRenderer = _turtle.GetComponent<LineRenderer>();
         _lastPosition = _turtle.transform.position;
 
-        _gamma = 90;
+        _gamma = 22.5f;
         _countOfRepeat = 4;
         _sentenceGenerator = new SentenceGenerator();
         //_sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
@@ -46,21 +46,49 @@ public class TurtleController : MonoBehaviour
             _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);
         }
 
-        int position = 1;
+
+        Stack<LineRenderer> _lineRendererStack = new Stack<LineRenderer>();
+        Stack<int> _countStack = new Stack<int>();
+        Stack<Vector3> _positionStack = new Stack<Vector3>();
+        Stack<Vector3> _directionStack = new Stack<Vector3>();
+        int count = 0;
         foreach(char letter in _sentenceToDraw)
         {
             switch (letter)
             {
                 case 'F':
-                    DrawLine(position);
                     _lineRenderer.positionCount++;
-                    position++;
+                    count++;
+                    DrawLine(count);
                     break;
                 case '+':
                     _direction =  Quaternion.Euler(0,0, _gamma) * _direction;
                     break;
                 case '-':
                     _direction = Quaternion.Euler(0, 0, -_gamma) * _direction;
+                    break;
+                case '[':
+                    _lineRendererStack.Push(_lineRenderer);
+                    _countStack.Push(count);
+                    _positionStack.Push(_lastPosition);
+                    _directionStack.Push(_direction);
+                    count = 0;
+                    Material material = _lineRenderer.material;
+
+                    GameObject branch = new GameObject("Branch");
+                    branch.transform.position = _lastPosition;
+                    _lineRenderer = branch.AddComponent<LineRenderer>();
+                    _lineRenderer.material = material;
+                    _lineRenderer.startWidth = .05f;
+                    _lineRenderer.endWidth = .05f;                     
+                    _lineRenderer.positionCount = 1;
+                    _lineRenderer.SetPosition(count, _lastPosition);
+                    break;
+                case ']':
+                    _lineRenderer = _lineRendererStack.Pop();
+                    count = _countStack.Pop();
+                    _lastPosition = _positionStack.Pop();
+                    _direction = _directionStack.Pop();
                     break;
             }
         }
