@@ -1,18 +1,29 @@
 ﻿using System;
+using NCalc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts
-{
     class Rule
     {
-        public char before { get; set; }
-        public string after { get; set; }
-        public Rule(char before, string after)
+        private String rule;
+
+        public Rule(String pattern)
         {
-            this.before = before;
-            this.after = after;
+            rule = pattern;
+        }
+
+        public Boolean apply(List<Double> t)
+        {
+            String replacedPattern = rule;
+            int i = 0;
+            foreach (Double param in t)
+            {
+                String strParam = "t" + i.ToString();
+                replacedPattern = replacedPattern.Replace(strParam, param.ToString());
+                i++;
+            }
+            Expression e = new Expression(replacedPattern);
+            return (Boolean) e.Evaluate();
         }
     }
-}

@@ -7,11 +7,11 @@ namespace Assets.Scripts
 {
     class SentenceGenerator
     {
-        public List<Rule> Rules { get; set; }
+        public List<OldRule> Rules { get; set; }
 
         public SentenceGenerator()
         {
-            Rules = new List<Rule>();
+            Rules = new List<OldRule>();
         }
         public string generate(string input)
         {
@@ -19,7 +19,7 @@ namespace Assets.Scripts
             foreach (char letter in input)
             {
                 bool applicated = false;
-                foreach (Rule rule in Rules)
+                foreach (OldRule rule in Rules)
                 {
                     if (letter.Equals(rule.before))
                     {
