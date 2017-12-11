@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Class for some simple tests 
+    /// </summary>
     class Program
     {
         static void Main(string[] args)

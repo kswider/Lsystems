@@ -4,16 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Class used to evaluate values of equations given in string format
+    /// </summary>
     class Equation
     {
         private String equation;
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
+        /// <param name="pattern">Pattern representing equation. Result of equation must be double. Variables must be represented by t0,t1...t9 </param>
         public Equation(String pattern)
         {
             equation = pattern;
         }
 
-
+        /// <summary>
+        /// Method that applies variables from list to equation and evaluates its value
+        /// </summary>
+        /// <param name="t">List of parameters. Position in list matches parameter number. Its imoprtant to keep list length equal to largest parameter number (e.g. t9 -> List.Count() == 9 )</param>
+        /// <returns>Evaluated double value</returns>
         public Double apply(List<Double> t)
         {
             String replacedPattern = equation;

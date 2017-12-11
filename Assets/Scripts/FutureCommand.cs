@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Something that may become Command
+    /// </summary>
     class FutureCommand
     {
         public String CommandName { get;  }

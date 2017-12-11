@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Class responsible for simulating L-Systems
+    /// </summary>
     class Simulation
     {
         public List<Atom> currState;

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Class representing production with features such as probability, guard and parameters.
+    /// </summary>
     class Production
     {
         public List<Rule> Guards { get; }

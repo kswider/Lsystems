@@ -4,16 +4,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+    /// <summary>
+    /// Class representing a rule which can be evaluated to boolean value
+    /// </summary>
     class Rule
     {
         private String rule;
 
-        public Rule(String pattern)
+    /// <summary>
+    /// Default Constructor
+    /// </summary>
+    /// <param name="pattern">Pattern representing rule. Result of equation must be double. Variables must be represented by t0,t1...t9 </param>
+    public Rule(String pattern)
         {
             rule = pattern;
         }
 
-        public Boolean apply(List<Double> t)
+    /// <summary>
+    /// Method that applies variables from list to rule and evaluates its value
+    /// </summary>
+    /// <param name="t">List of parameters. Position in list matches parameter number. Its imoprtant to keep list length equal to largest parameter number (e.g. t9 -> List.Count() == 9 )</param>
+    /// <returns>Evaluated boolean value</returns>
+    public Boolean apply(List<Double> t)
         {
             String replacedPattern = rule;
             int i = 0;
