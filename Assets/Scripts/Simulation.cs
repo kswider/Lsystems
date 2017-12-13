@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
-    /// <summary>
-    /// Class responsible for simulating L-Systems
-    /// </summary>
-    class Simulation
+/// <summary>
+/// Class responsible for simulating L-Systems
+/// </summary>
+class Simulation
     {
         public List<Atom> currState;
         public List<Production> productions;
@@ -150,14 +151,62 @@ using System.Text;
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
+            }
+            else
+            {
+                currState = null;
+                productions = null;
+                dictionary = null;
+            }
         }
-        else
+
+        public static List<Atom> generateStateFromSting(String state)
         {
-            currState = null;
-            productions = null;
-            dictionary = null;
+            List<Atom> ret = new List<Atom>();
+
+            String pattern = @"(\w)(\(([0-9]+(\.[0-9]+)?)(,([0-9]+(\.[0-9]+))?)*\))?";
+            Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            Match m = regex.Match(state);
+
+            while (m.Success)
+            {
+                Group g1 = m.Groups[1];
+                Group g2 = m.Groups[2];
+
+                //Atom letter
+                CaptureCollection cc1 = g1.Captures;
+                Capture letter = cc1[0];
+
+                //Atom args
+                List<Double> nParams = new List<Double>();
+                CaptureCollection cc2 = g2.Captures;
+                for (int j = 0; j < cc2.Count; j++)
+                {
+                    Capture c2 = cc2[j];
+
+                    String pattern2 = @"[0-9]+(\.[0-9]+)?";
+                    Regex regex2 = new Regex(pattern2, RegexOptions.IgnoreCase);
+                    Match m2 = regex2.Match(c2.ToString());
+                    while (m2.Success)
+                    {
+                        Group g3 = m2.Groups[0];
+                        CaptureCollection cc3 = g3.Captures;
+                        for (int l = 0; l < cc3.Count; l++)
+                        {
+                            Capture c3 = cc3[l];
+                            nParams.Add(Convert.ToDouble(c3.ToString()));
+                        }
+
+                        ret.Add(new Atom(letter.ToString()[0], nParams));
+                        m2 = m2.NextMatch();
+                    }
+                }
+
+                m = m.NextMatch();
+            }
+
+        return ret;
         }
-    }
 
         /// <summary>
         /// Method aplying productions to current state of the system n times
