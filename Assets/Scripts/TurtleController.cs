@@ -37,7 +37,7 @@ public class TurtleController : MonoBehaviour
         parameters = Scenes.getSceneRules();
         foreach(KeyValuePair<char, string> entry in parameters)
         {
-            _sentenceGenerator.Rules.Add(new Rule(entry.Key,entry.Value));
+            _sentenceGenerator.Rules.Add(new OldRule(entry.Key,entry.Value));
         }
         
         // generowanie ciągu
