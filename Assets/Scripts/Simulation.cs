@@ -13,6 +13,12 @@ using System.Text;
         public List<Production> productions;
         public Dictionary<Char, FutureCommand> dictionary;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        /// <param name="currState">Starting string exported to format of List of Atoms</param>
+        /// <param name="productions">List of defined productions</param>
+        /// <param name="dictionary">Dictionary used to translating atoms to commands</param>
         public Simulation(List<Atom> currState, List<Production> productions, Dictionary<char, FutureCommand> dictionary)
         {
             this.currState = currState;
@@ -20,6 +26,10 @@ using System.Text;
             this.dictionary = dictionary;
         }
 
+        /// <summary>
+        /// Method aplying productions to current state of the system n times
+        /// </summary>
+        /// <param name="n">Defines how many steps of productions will be done</param>
         public void evaluate(int n)
         {
             List<Atom> nextState = new List<Atom>();
@@ -31,9 +41,9 @@ using System.Text;
                     {
                         if (prod.passesGuards(currState[i]))
                         {
-                            foreach(FutureAtom atom in currState[i].apply(prod))
+                            foreach(Atom atom in currState[i].apply(prod))
                             {
-                                nextState.Add(atom.evaluate(currState[i].Parameters));
+                                nextState.Add(atom);
                             }
                             break;
                         }
@@ -43,6 +53,10 @@ using System.Text;
             currState = nextState;
         }
 
+        /// <summary>
+        /// Method for translating current state of system to list of commands
+        /// </summary>
+        /// <returns></returns>
         public List<Command> translate()
         {
             List<Command> ret = new List<Command>();
