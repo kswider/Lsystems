@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 /// <summary>
 /// Class responsible for simulating L-Systems
@@ -55,9 +56,9 @@ class Simulation
             productions.Add(p1);
 
             dictionary = new Dictionary<char, FutureCommand>();
-            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10") }));
-            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26") }));
-            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26") }));
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
         }else if(egNum == 2)
@@ -96,16 +97,16 @@ class Simulation
             productions.Add(p2);
 
             dictionary = new Dictionary<char, FutureCommand>();
-            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10") }));
-            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26") }));
-            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26") }));
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
         }
         else if (egNum == 3)
         {
-            currState = new List<Atom> { new Atom('X', new List<double> { 20 }) };
+            currState = new List<Atom> { new Atom('X', new List<double> { 20.0 }) };
 
             Production p1 = new Production(
                 new List<Rule> { new Rule("true") },
@@ -146,8 +147,8 @@ class Simulation
 
             dictionary = new Dictionary<char, FutureCommand>();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
-            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26") }));
-            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26") }));
+            dictionary.Add('+', new FutureCommand("Rotate left", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate right", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
@@ -208,31 +209,47 @@ class Simulation
         return ret;
         }
 
+        public void toString()
+        {
+        String tmp = "";
+            foreach(Atom atom in currState)
+            {
+                tmp += atom.Letter;
+            }
+        Debug.Log(tmp);
+        }   
+
         /// <summary>
         /// Method aplying productions to current state of the system n times
         /// </summary>
         /// <param name="n">Defines how many steps of productions will be done</param>
         public void evaluate(int n)
         {
-            List<Atom> nextState = new List<Atom>();
+
             for(int i = 0; i < n; i++)
             {
-                for(int j = 0;j < currState.Count; j++)
+                List<Atom> nextState = new List<Atom>();
+
+                foreach (Atom currStateAtom in currState)
                 {
-                    foreach(Production prod in productions)
+                    Boolean hasPassed = false;
+                    foreach (Production prod in productions)
                     {
-                        if (prod.passesGuards(currState[i]))
+                        if (prod.passesGuards(currStateAtom))
                         {
-                            foreach(Atom atom in currState[i].apply(prod))
+                            foreach(Atom nextAtom in currStateAtom.apply(prod))
                             {
-                                nextState.Add(atom);
+                                nextState.Add(nextAtom);
                             }
+                            hasPassed = true;
                             break;
                         }
                     }
+                if (!hasPassed) nextState.Add(currStateAtom);
                 }
-            }
-            currState = nextState;
+
+                currState = nextState;
+        }
         }
 
         /// <summary>

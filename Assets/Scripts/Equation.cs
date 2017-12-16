@@ -3,11 +3,12 @@ using NCalc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
-    /// <summary>
-    /// Class used to evaluate values of equations given in string format
-    /// </summary>
-    class Equation
+/// <summary>
+/// Class used to evaluate values of equations given in string format
+/// </summary>
+class Equation
     {
         private String equation;
 
@@ -32,7 +33,7 @@ using System.Text;
             foreach (Double param in t)
             {
                 String strParam = "t" + i.ToString();
-                replacedPattern = replacedPattern.Replace(strParam, param.ToString());
+                replacedPattern = replacedPattern.Replace(strParam, String.Format("{0:0.000}", param));
                 i++;
             }
             Expression e = new Expression(replacedPattern);

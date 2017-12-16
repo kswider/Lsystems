@@ -53,7 +53,9 @@ public class TurtleController : MonoBehaviour
         Stack<Vector3> _positionStack = new Stack<Vector3>();
         Stack<Vector3> _directionStack = new Stack<Vector3>();
         int count = 0;
-        Simulation sim = new Simulation(1);
+        Simulation sim = new Simulation(2);
+        sim.evaluate(7);
+        sim.toString();
         List <Command> commands = sim.translate();
         foreach(Command command in commands)
         {
