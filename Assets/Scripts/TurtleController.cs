@@ -4,6 +4,7 @@ using UnityEngine;
 using Assets.Scripts;
 using System;
 
+
 public class TurtleController : MonoBehaviour
 {
     [SerializeField]
@@ -27,24 +28,24 @@ public class TurtleController : MonoBehaviour
         _lineRenderer = _turtle.GetComponent<LineRenderer>();
         _lastPosition = _turtle.transform.position;
 
-        _gamma = 25.7f;
-        _countOfRepeat = 7;
-        _sentenceGenerator = new SentenceGenerator();
+        //_gamma = 25.7f;
+        //_countOfRepeat = 7;
+        //_sentenceGenerator = new SentenceGenerator();
         //_sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
 
-        _sentenceToDraw = Scenes.getSceneStartingSentence();
+        //_sentenceToDraw = Scenes.getSceneStartingSentence();
         // ładowanie reguł z poprzedniej sceny i dodawanie do generatora
-        parameters = Scenes.getSceneRules();
-        foreach(KeyValuePair<char, string> entry in parameters)
-        {
-            _sentenceGenerator.Rules.Add(new OldRule(entry.Key,entry.Value));
-        }
+        //parameters = Scenes.getSceneRules();
+        //foreach(KeyValuePair<char, string> entry in parameters)
+        //{
+        //    _sentenceGenerator.Rules.Add(new OldRule(entry.Key,entry.Value));
+        //}
         
         // generowanie ciągu
-        for(int i = 0; i < _countOfRepeat; i++)
-        {
-            _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);
-        }
+        //for(int i = 0; i < _countOfRepeat; i++)
+        //{
+        //    _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);
+        //}
 
 
         Stack<LineRenderer> _lineRendererStack = new Stack<LineRenderer>();
@@ -52,22 +53,32 @@ public class TurtleController : MonoBehaviour
         Stack<Vector3> _positionStack = new Stack<Vector3>();
         Stack<Vector3> _directionStack = new Stack<Vector3>();
         int count = 0;
-        foreach(char letter in _sentenceToDraw)
+        Simulation sim = new Simulation(1);
+        List <Command> commands = sim.translate();
+        foreach(Command command in commands)
         {
-            switch (letter)
+            switch (command.CommandName)
             {
-                case 'F':
+                case "Forward":
                     _lineRenderer.positionCount++;
                     count++;
                     DrawLine(count);
                     break;
-                case '+':
-                    _direction =  Quaternion.Euler(0,0, _gamma) * _direction;
+                case "Rotate X":
+
                     break;
-                case '-':
+                case "Rotate left":
+                    _gamma = (float)command.parameters[0];
+                    _direction = Quaternion.Euler(0, 0, _gamma) * _direction;
+                    break;
+                case "Rotate right":
+                    _gamma = (float)command.parameters[0];
                     _direction = Quaternion.Euler(0, 0, -_gamma) * _direction;
                     break;
-                case '[':
+                case "Rotate Z":
+
+                    break;
+                case "Push position":
                     _lineRendererStack.Push(_lineRenderer);
                     _countStack.Push(count);
                     _positionStack.Push(_lastPosition);
@@ -80,11 +91,11 @@ public class TurtleController : MonoBehaviour
                     _lineRenderer = branch.AddComponent<LineRenderer>();
                     _lineRenderer.material = material;
                     _lineRenderer.startWidth = .05f;
-                    _lineRenderer.endWidth = .05f;                     
+                    _lineRenderer.endWidth = .05f;
                     _lineRenderer.positionCount = 1;
                     _lineRenderer.SetPosition(count, _lastPosition);
                     break;
-                case ']':
+                case "Pull position":
                     _lineRenderer = _lineRendererStack.Pop();
                     count = _countStack.Pop();
                     _lastPosition = _positionStack.Pop();

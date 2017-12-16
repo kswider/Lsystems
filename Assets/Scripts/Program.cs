@@ -47,7 +47,7 @@ using System.Text;
             {
                 Console.WriteLine(obj.CommandName);
             }
-            Console.ReadKey();
+  //          Console.ReadKey();
 
             sim.evaluate(1);
 
@@ -55,7 +55,7 @@ using System.Text;
             {
                 Console.WriteLine(obj.CommandName);
             }
-            Console.ReadKey();
+         //   Console.ReadKey();
 
             sim.evaluate(1);
 
@@ -63,6 +63,6 @@ using System.Text;
             {
                 Console.WriteLine(obj.CommandName);
             }
-            Console.ReadKey();
+           // Console.ReadKey();
         }
     }
