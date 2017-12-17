@@ -14,7 +14,7 @@ public class TurtleController : MonoBehaviour
     private Vector3 _lastPosition;
     private Vector3 _newPosition;
 
-    private Vector3 _direction = new Vector3(0, 0.25f, 0);
+    private Vector3 _direction = new Vector3(0, 1, 0);
     private float _gamma;
     private int _countOfRepeat;
     private string _sentenceToDraw;
@@ -28,37 +28,78 @@ public class TurtleController : MonoBehaviour
         _lineRenderer = _turtle.GetComponent<LineRenderer>();
         _lastPosition = _turtle.transform.position;
 
-        //_gamma = 25.7f;
-        //_countOfRepeat = 7;
-        //_sentenceGenerator = new SentenceGenerator();
-        //_sentenceGenerator.Rules.Add(new Rule('F', "FF-F--F-F"));
-
-        //_sentenceToDraw = Scenes.getSceneStartingSentence();
-        // ładowanie reguł z poprzedniej sceny i dodawanie do generatora
-        //parameters = Scenes.getSceneRules();
-        //foreach(KeyValuePair<char, string> entry in parameters)
-        //{
-        //    _sentenceGenerator.Rules.Add(new OldRule(entry.Key,entry.Value));
-        //}
-        
-        // generowanie ciągu
-        //for(int i = 0; i < _countOfRepeat; i++)
-        //{
-        //    _sentenceToDraw = _sentenceGenerator.generate(_sentenceToDraw);
-        //}
-
 
         Stack<LineRenderer> _lineRendererStack = new Stack<LineRenderer>();
         Stack<int> _countStack = new Stack<int>();
         Stack<Vector3> _positionStack = new Stack<Vector3>();
         Stack<Vector3> _directionStack = new Stack<Vector3>();
-        int count = 0;
-        Simulation sim = new Simulation(2);
-        sim.evaluate(7);
+     //   int count = 0;
+        Simulation sim = new Simulation(1);
+        sim.evaluate(4);
         sim.toString();
         List <Command> commands = sim.translate();
-        foreach(Command command in commands)
+
+
+        foreach (Command command in commands)
         {
+
+            switch (command.CommandName)
+            {
+                // 3D
+                case "Forward":
+                    _newPosition = _lastPosition;
+                    _newPosition += _direction;
+
+                    GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+
+                    Vector3 newScale = cylinder.transform.localScale;
+                    newScale.y = Vector3.Distance(_lastPosition, _newPosition)/2;
+                    newScale.x = 0.25f;
+                    newScale.z = 0.25f;
+                    cylinder.transform.localScale = newScale;
+            
+                    cylinder.transform.position = Vector3.Lerp(_lastPosition, _newPosition, 0.5f);
+                    cylinder.transform.up = _newPosition - _lastPosition;
+
+                    _lastPosition = _newPosition;
+                    break;
+                case "Rotate X":
+                    _gamma = (float)command.parameters[0];
+                    _direction = Quaternion.Euler(_gamma, 0, 0) * _direction;
+                    break;
+                case "Rotate Y":
+                    _gamma = (float)command.parameters[0];
+                    _direction = Quaternion.Euler(0, _gamma, 0) * _direction;
+                    break;
+                case "Rotate Z":
+                    _gamma = (float)command.parameters[0];
+                    _direction = Quaternion.Euler(0, 0, _gamma) * _direction;
+                    break;
+                case "Push position":
+                  //  _lineRendererStack.Push(_lineRenderer);
+                   // _countStack.Push(count);
+                    _positionStack.Push(_lastPosition);
+                    _directionStack.Push(_direction);
+                 //   count = 0;
+                //    Material material = _lineRenderer.material;
+
+                //    GameObject branch = new GameObject("Branch");
+                //    branch.transform.position = _lastPosition;
+               //     _lineRenderer = branch.AddComponent<LineRenderer>();
+              //      _lineRenderer.material = material;
+              //      _lineRenderer.startWidth = .05f;
+               //     _lineRenderer.endWidth = .05f;
+                //    _lineRenderer.positionCount = 1;
+                //    _lineRenderer.SetPosition(count, _lastPosition);
+                    break;
+                case "Pull position":
+                //    _lineRenderer = _lineRendererStack.Pop();
+                //    count = _countStack.Pop();
+                    _lastPosition = _positionStack.Pop();
+                    _direction = _directionStack.Pop();
+                    break;
+            }
+            /* 2D
             switch (command.CommandName)
             {
                 case "Forward":
@@ -104,6 +145,7 @@ public class TurtleController : MonoBehaviour
                     _direction = _directionStack.Pop();
                     break;
             }
+            */
         }
     }
     
