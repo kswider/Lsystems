@@ -8,18 +8,18 @@ using System;
 public class TurtleController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _turtle;
+    private GameObject turtle;
     [SerializeField]
-    private Material _material;
+    private Material material;
 
     private SentenceGenerator _sentenceGenerator;
-    private Vector3 _lastPosition;
-    private Vector3 _newPosition;
+    private Vector3 lastPosition;
+    private Vector3 newPosition;
 
-    private Vector3 _direction = new Vector3(0, 1, 0);
-    private float _delta;
-    private int _countOfRepeat;
-    private string _sentenceToDraw;
+    private Vector3 direction = new Vector3(0, 1, 0);
+    private float delta;
+    private int countOfRepeat;
+    private string sentenceToDraw;
     private static Dictionary<char, string> parameters;
 
     private LineRenderer _lineRenderer;
@@ -27,17 +27,17 @@ public class TurtleController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        _lineRenderer = _turtle.GetComponent<LineRenderer>();
-        _lastPosition = _turtle.transform.position;
+        //_lineRenderer = _turtle.GetComponent<LineRenderer>();
+        lastPosition = turtle.transform.position;
 
 
         Stack<LineRenderer> _lineRendererStack = new Stack<LineRenderer>();
-        Stack<int> _countStack = new Stack<int>();
-        Stack<Vector3> _positionStack = new Stack<Vector3>();
-        Stack<Vector3> _directionStack = new Stack<Vector3>();
+       // Stack<int> _countStack = new Stack<int>();
+        Stack<Vector3> positionStack = new Stack<Vector3>();
+        Stack<Orientation> orientationStack = new Stack<Orientation>();
      //   int count = 0;
-        Simulation sim = new Simulation(4);
-        sim.evaluate(2);
+        Simulation sim = new Simulation(5);
+        sim.evaluate(10);
         List <Command> commands = sim.translate();
 
         float scale = 1;
@@ -49,35 +49,35 @@ public class TurtleController : MonoBehaviour
             {
                 // 3D
                 case "Forward":
-                    _newPosition = _lastPosition;
-                    _newPosition += orientation.H * (float)command.parameters[0];
+                    newPosition = lastPosition;
+                    newPosition += orientation.H * (float)command.parameters[0];
 
                     GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
-                    cylinder.GetComponent<MeshRenderer>().material = _material;
+                    cylinder.GetComponent<MeshRenderer>().material = material;
 
                     Vector3 newScale = cylinder.transform.localScale;
-                    newScale.y = Vector3.Distance(_lastPosition, _newPosition)/2;
+                    newScale.y = Vector3.Distance(lastPosition, newPosition)/2;
                     newScale.x = scale;
                     newScale.z = scale;
                     cylinder.transform.localScale = newScale;
             
-                    cylinder.transform.position = Vector3.Lerp(_lastPosition, _newPosition, 0.5f);
-                    cylinder.transform.up = _newPosition - _lastPosition;
+                    cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
+                    cylinder.transform.up = newPosition - lastPosition;
 
-                    _lastPosition = _newPosition;
+                    lastPosition = newPosition;
                     break;
                 case "Rotate U":
-                    _delta = (float)command.parameters[0];
-                    orientation.RotateU(_delta);
+                    delta = (float)command.parameters[0];
+                    orientation.RotateU(delta);
                     break;
                 case "Rotate L":
-                    _delta = (float)command.parameters[0];
-                    orientation.RotateL(_delta);
+                    delta = (float)command.parameters[0];
+                    orientation.RotateL(delta);
                     break;
                 case "Rotate H":
-                    _delta = (float)command.parameters[0];
-                    orientation.RotateH(_delta);
+                    delta = (float)command.parameters[0];
+                    orientation.RotateH(delta);
                     break;
                 case "Dollar rotation":
                     orientation.DollarRotation();
@@ -85,8 +85,8 @@ public class TurtleController : MonoBehaviour
                 case "Push position":
                   //  _lineRendererStack.Push(_lineRenderer);
                    // _countStack.Push(count);
-                    _positionStack.Push(_lastPosition);
-                    _directionStack.Push(_direction);
+                    positionStack.Push(lastPosition);
+                    orientationStack.Push(new Orientation(orientation));
                  //   count = 0;
                 //    Material material = _lineRenderer.material;
 
@@ -102,8 +102,8 @@ public class TurtleController : MonoBehaviour
                 case "Pull position":
                 //    _lineRenderer = _lineRendererStack.Pop();
                 //    count = _countStack.Pop();
-                    _lastPosition = _positionStack.Pop();
-                    _direction = _directionStack.Pop();
+                    lastPosition = positionStack.Pop();
+                    orientation = orientationStack.Pop();
                     break;
                 case "Change width":
                     scale = (float)command.parameters[0];
@@ -163,10 +163,10 @@ public class TurtleController : MonoBehaviour
     
     private void DrawLine(int index)
     {
-        _newPosition = _lastPosition;
-        _newPosition += _direction;
-        _lineRenderer.SetPosition(index, _newPosition);
-        _lastPosition = _newPosition;
+        newPosition = lastPosition;
+        newPosition += direction;
+     //   lineRenderer.SetPosition(index, newPosition);
+        lastPosition = newPosition;
     }  
 
 }

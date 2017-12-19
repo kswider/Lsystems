@@ -57,8 +57,8 @@ class Simulation
 
             dictionary = new Dictionary<char, FutureCommand>();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
-            dictionary.Add('+', new FutureCommand("Rotate Z", new List<Equation> { new Equation("26.0") }));
-            dictionary.Add('-', new FutureCommand("Rotate Z", new List<Equation> { new Equation("-26.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
         }else if(egNum == 2)
@@ -98,8 +98,8 @@ class Simulation
 
             dictionary = new Dictionary<char, FutureCommand>();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
-            dictionary.Add('+', new FutureCommand("Rotate Z", new List<Equation> { new Equation("26.0") }));
-            dictionary.Add('-', new FutureCommand("Rotate Z", new List<Equation> { new Equation("-26.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
@@ -147,8 +147,8 @@ class Simulation
 
             dictionary = new Dictionary<char, FutureCommand>();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
-            dictionary.Add('+', new FutureCommand("Rotate Z", new List<Equation> { new Equation("26.0") }));
-            dictionary.Add('-', new FutureCommand("Rotate Z", new List<Equation> { new Equation("-26.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
@@ -188,15 +188,15 @@ class Simulation
             productions.Add(p1);
 
             dictionary = new Dictionary<char, FutureCommand>();
-            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
-            dictionary.Add('+', new FutureCommand("Rotate Z", new List<Equation> { new Equation("22.5") }));
-            dictionary.Add('-', new FutureCommand("Rotate Z", new List<Equation> { new Equation("-22.5") }));
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("1.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("22.5") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-22.5") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
         }
         else if (egNum == 5)
         {
-            currState = new List<Atom> { new Atom('A', new List<double> {1,10 }) };
+            currState = new List<Atom> { new Atom('A', new List<double> {1,0.5 }) };
 
             //variables used in productions
             double r1 = 0.9;
