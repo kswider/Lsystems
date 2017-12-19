@@ -215,11 +215,11 @@ class Simulation
                             new FutureAtom('!', new List<Equation> {new Equation("t1") }),
                             new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
                             new FutureAtom('[', new List<Equation>()),
-                            new FutureAtom('&', new List<Equation>{ new Equation(a0.ToString()) }),
-                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom('&', new List<Equation>{ new Equation(String.Format("{0:0.000}", a0)) }),
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 * " + String.Format("{0:0.000}", r1)), new Equation("t1 * " + String.Format("{0:0.000}",wr)) }),
                             new FutureAtom(']', new List<Equation>()),
-                            new FutureAtom('/', new List<Equation> { new Equation(d.ToString())}),
-                            new FutureAtom('A', new List<Equation> { new Equation("t0 *" + r1.ToString()), new Equation("t1 *" + wr.ToString()) }) },
+                            new FutureAtom('/', new List<Equation> { new Equation(String.Format("{0:0.000}", d)) }),
+                            new FutureAtom('A', new List<Equation> { new Equation("t0 * " + String.Format("{0:0.000}", r1)), new Equation("t1 *" + String.Format("{0:0.000}", wr)) }) },
                         1.0)});
 
             Production p2 = new Production(
@@ -230,11 +230,11 @@ class Simulation
                             new FutureAtom('!', new List<Equation> {new Equation("t1") }),
                             new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
                             new FutureAtom('[', new List<Equation>()),
-                            new FutureAtom('-', new List<Equation> { new Equation(a2.ToString())}),
+                            new FutureAtom('-', new List<Equation> { new Equation(String.Format("{0:0.000}", a2)) }),
                             new FutureAtom('$', new List<Equation>()),
-                            new FutureAtom('C', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom('C', new List<Equation>{ new Equation("t0 * " + String.Format("{0:0.000}",r1)), new Equation("t1 * " + String.Format("{0:0.000}", wr)) }),
                             new FutureAtom(']', new List<Equation>()),
-                            new FutureAtom('C', new List<Equation>{ new Equation("t0 *" + r1.ToString()), new Equation("t1 * " + wr.ToString()) }) },
+                            new FutureAtom('C', new List<Equation>{ new Equation("t0 * " + String.Format("{0:0.000}", r1)), new Equation("t1 * " + String.Format("{0:0.000}", wr)) }) },
                         1.0)});
 
             Production p3 = new Production(
@@ -245,11 +245,11 @@ class Simulation
                             new FutureAtom('!', new List<Equation> {new Equation("t1") }),
                             new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
                             new FutureAtom('[', new List<Equation>()),
-                            new FutureAtom('+', new List<Equation> { new Equation(a2.ToString())}),
+                            new FutureAtom('+', new List<Equation> { new Equation(String.Format("{0:0.000}", a0)) }),
                             new FutureAtom('$', new List<Equation>()),
-                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 * " + String.Format("{0:0.000}", r2)), new Equation("t1 * " + String.Format("{0:0.000}", wr)) }),
                             new FutureAtom(']', new List<Equation>()),
-                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r1.ToString()), new Equation("t1 * " + wr.ToString()) }) },
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 * " + String.Format("{0:0.000}", r1)), new Equation("t1 * " + String.Format("{0:0.000}", wr)) }) },
                         1.0)});
 
 
@@ -269,7 +269,9 @@ class Simulation
             dictionary.Add('$', new FutureCommand("Dollar rotation", new List<Equation>()));
             dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
             dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("-t0") }));
-
+            dictionary.Add('C', new FutureCommand("Do nothing", new List<Equation>()));
+            dictionary.Add('A', new FutureCommand("Do nothing", new List<Equation>()));
+            dictionary.Add('B', new FutureCommand("Do nothing", new List<Equation>()));
         }
         else
             {
@@ -379,6 +381,7 @@ class Simulation
             List<Command> ret = new List<Command>();
             foreach (Atom atom in currState)
             {
+                Debug.Log(atom.Letter);
                 FutureCommand listing = dictionary[atom.Letter];
                 ret.Add(listing.evaluate(atom.Parameters));
             }

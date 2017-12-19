@@ -36,6 +36,8 @@ class Equation
                 replacedPattern = replacedPattern.Replace(strParam, String.Format("{0:0.000}", param));
                 i++;
             }
+
+            Debug.Log(replacedPattern);
             Expression e = new Expression(replacedPattern);
             return (Double)e.Evaluate();
         }
