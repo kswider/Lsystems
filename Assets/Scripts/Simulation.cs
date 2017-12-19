@@ -153,7 +153,125 @@ class Simulation
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
             }
-            else
+        else if (egNum == 4)
+        {
+            currState = new List<Atom> { new Atom('F', new List<double>()) };
+
+            Production p1 = new Production(
+                new List<Rule> { new Rule("true") },
+                'F',
+                new List<SimpleProduction> {  new SimpleProduction(
+                        new List<FutureAtom> {
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('-', new List<Equation>()),
+                            new FutureAtom('[', new List<Equation>()),
+                            new FutureAtom('-', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('+', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('+', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom(']', new List<Equation>()),
+                            new FutureAtom('+', new List<Equation>()),
+                            new FutureAtom('[', new List<Equation>()),
+                            new FutureAtom('+', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('-', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom('-', new List<Equation>()),
+                            new FutureAtom('F', new List<Equation>()),
+                            new FutureAtom(']', new List<Equation>()) },
+                        1.0) });
+
+            productions = new List<Production>();
+            productions.Add(p1);
+
+            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
+            dictionary.Add('+', new FutureCommand("Rotate Z", new List<Equation> { new Equation("22.5") }));
+            dictionary.Add('-', new FutureCommand("Rotate Z", new List<Equation> { new Equation("-22.5") }));
+            dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
+            dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
+        }
+        else if (egNum == 5)
+        {
+            currState = new List<Atom> { new Atom('A', new List<double> {1,10 }) };
+
+            //variables used in productions
+            double r1 = 0.9;
+            double r2 = 0.6;
+            double a0 = 45;
+            double a2 = 45;
+            double d = 137.5;
+            double wr = 0.707;
+
+
+            Production p1 = new Production(
+                new List<Rule> { new Rule("true") },
+                'A',
+                new List<SimpleProduction> {  new SimpleProduction(
+                        new List<FutureAtom> {
+                            new FutureAtom('!', new List<Equation> {new Equation("t1") }),
+                            new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
+                            new FutureAtom('[', new List<Equation>()),
+                            new FutureAtom('&', new List<Equation>{ new Equation(a0.ToString()) }),
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom(']', new List<Equation>()),
+                            new FutureAtom('/', new List<Equation> { new Equation(d.ToString())}),
+                            new FutureAtom('A', new List<Equation> { new Equation("t0 *" + r1.ToString()), new Equation("t1 *" + wr.ToString()) }) },
+                        1.0)});
+
+            Production p2 = new Production(
+                new List<Rule> { new Rule("true") },
+                'B',
+                new List<SimpleProduction> {  new SimpleProduction(
+                        new List<FutureAtom> {
+                            new FutureAtom('!', new List<Equation> {new Equation("t1") }),
+                            new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
+                            new FutureAtom('[', new List<Equation>()),
+                            new FutureAtom('-', new List<Equation> { new Equation(a2.ToString())}),
+                            new FutureAtom('$', new List<Equation>()),
+                            new FutureAtom('C', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom(']', new List<Equation>()),
+                            new FutureAtom('C', new List<Equation>{ new Equation("t0 *" + r1.ToString()), new Equation("t1 * " + wr.ToString()) }) },
+                        1.0)});
+
+            Production p3 = new Production(
+                new List<Rule> { new Rule("true") },
+                'C',
+                new List<SimpleProduction> {  new SimpleProduction(
+                        new List<FutureAtom> {
+                            new FutureAtom('!', new List<Equation> {new Equation("t1") }),
+                            new FutureAtom('F', new List<Equation>{ new Equation("t0") }),
+                            new FutureAtom('[', new List<Equation>()),
+                            new FutureAtom('+', new List<Equation> { new Equation(a2.ToString())}),
+                            new FutureAtom('$', new List<Equation>()),
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r2.ToString()), new Equation("t1 * " + wr.ToString()) }),
+                            new FutureAtom(']', new List<Equation>()),
+                            new FutureAtom('B', new List<Equation>{ new Equation("t0 *" + r1.ToString()), new Equation("t1 * " + wr.ToString()) }) },
+                        1.0)});
+
+
+
+            productions = new List<Production>();
+            productions.Add(p1);
+            productions.Add(p2);
+            productions.Add(p3);
+
+            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('!', new FutureCommand("Change width", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-t0") }));
+            dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
+            dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
+            dictionary.Add('$', new FutureCommand("Dollar rotation", new List<Equation>()));
+            dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("-t0") }));
+
+        }
+        else
             {
                 currState = null;
                 productions = null;

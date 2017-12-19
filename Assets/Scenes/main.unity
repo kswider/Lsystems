@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turtle: {fileID: 1231697158}
+  _material: {fileID: 2100000, guid: e8562b0e1fcbae8418668844cd3fcca8, type: 2}
 --- !u!1 &706180525
 GameObject:
   m_ObjectHideFlags: 0

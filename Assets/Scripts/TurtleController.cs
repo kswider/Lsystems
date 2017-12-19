@@ -9,13 +9,15 @@ public class TurtleController : MonoBehaviour
 {
     [SerializeField]
     private GameObject _turtle;
+    [SerializeField]
+    private Material _material;
 
     private SentenceGenerator _sentenceGenerator;
     private Vector3 _lastPosition;
     private Vector3 _newPosition;
 
     private Vector3 _direction = new Vector3(0, 1, 0);
-    private float _gamma;
+    private float _delta;
     private int _countOfRepeat;
     private string _sentenceToDraw;
     private static Dictionary<char, string> parameters;
@@ -34,12 +36,13 @@ public class TurtleController : MonoBehaviour
         Stack<Vector3> _positionStack = new Stack<Vector3>();
         Stack<Vector3> _directionStack = new Stack<Vector3>();
      //   int count = 0;
-        Simulation sim = new Simulation(1);
-        sim.evaluate(4);
+        Simulation sim = new Simulation(5);
+        sim.evaluate(10);
         sim.toString();
         List <Command> commands = sim.translate();
 
-
+        float scale = 1;
+        Orientation orientation = new Orientation();
         foreach (Command command in commands)
         {
 
@@ -48,14 +51,16 @@ public class TurtleController : MonoBehaviour
                 // 3D
                 case "Forward":
                     _newPosition = _lastPosition;
-                    _newPosition += _direction;
+                    _newPosition += orientation.H * (float)command.parameters[0];
 
                     GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
 
+                    cylinder.GetComponent<MeshRenderer>().material = _material;
+
                     Vector3 newScale = cylinder.transform.localScale;
                     newScale.y = Vector3.Distance(_lastPosition, _newPosition)/2;
-                    newScale.x = 0.25f;
-                    newScale.z = 0.25f;
+                    newScale.x = scale;
+                    newScale.z = scale;
                     cylinder.transform.localScale = newScale;
             
                     cylinder.transform.position = Vector3.Lerp(_lastPosition, _newPosition, 0.5f);
@@ -63,17 +68,20 @@ public class TurtleController : MonoBehaviour
 
                     _lastPosition = _newPosition;
                     break;
-                case "Rotate X":
-                    _gamma = (float)command.parameters[0];
-                    _direction = Quaternion.Euler(_gamma, 0, 0) * _direction;
+                case "Rotate U":
+                    _delta = (float)command.parameters[0];
+                    orientation.RotateU(_delta);
                     break;
-                case "Rotate Y":
-                    _gamma = (float)command.parameters[0];
-                    _direction = Quaternion.Euler(0, _gamma, 0) * _direction;
+                case "Rotate L":
+                    _delta = (float)command.parameters[0];
+                    orientation.RotateL(_delta);
                     break;
-                case "Rotate Z":
-                    _gamma = (float)command.parameters[0];
-                    _direction = Quaternion.Euler(0, 0, _gamma) * _direction;
+                case "Rotate H":
+                    _delta = (float)command.parameters[0];
+                    orientation.RotateH(_delta);
+                    break;
+                case "Dollar rotation":
+                    orientation.DollarRotation();
                     break;
                 case "Push position":
                   //  _lineRendererStack.Push(_lineRenderer);
@@ -98,6 +106,11 @@ public class TurtleController : MonoBehaviour
                     _lastPosition = _positionStack.Pop();
                     _direction = _directionStack.Pop();
                     break;
+                case "Change width":
+                    scale = (float)command.parameters[0];
+                    break;
+
+
             }
             /* 2D
             switch (command.CommandName)
