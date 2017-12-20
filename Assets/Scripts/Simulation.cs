@@ -203,6 +203,25 @@ class Simulation
             double r2 = 0.6;
             double a0 = 45;
             double a2 = 45;
+            foreach(KeyValuePair<string,double> parameter in Scenes.getSceneParameters())
+            {
+                switch (parameter.Key)
+                {
+                    case "r1":
+                        r1 = parameter.Value;
+                    break;
+                    case "r2":
+                        r2 = parameter.Value;
+                    break;
+                    case "a0":
+                        a0 = parameter.Value;
+                        break;
+                    case "a2":
+                        a2 = parameter.Value;
+                        break;
+                }
+            }
+
             double d = 137.5;
             double wr = 0.707;
 

@@ -8,7 +8,7 @@ public static class Scenes
 
     private static Dictionary<char, string> rules;
     private static string startingSentence;
-
+    private static Dictionary<string,double> parameters;
     public static void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
@@ -43,4 +43,14 @@ public static class Scenes
         Scenes.rules.Add(paramKey, paramValue);
     }
 
+    public static Dictionary<string, double> getSceneParameters()
+    {
+        return parameters;
+    }
+    public static void addParameter(string paramKey, double paramValue)
+    {
+        if (parameters == null)
+            parameters = new Dictionary<string, double>();
+        parameters.Add(paramKey, paramValue);
+    }
 }
