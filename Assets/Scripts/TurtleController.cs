@@ -43,9 +43,9 @@ public class TurtleController : MonoBehaviour
         //Debug.Log("JSON: " + JsonUtility.ToJson(a).ToString());
 
         // Creating sentence to draw
-        Simulation sim = new Simulation(1);
+        Simulation sim = new Simulation(5);
         sim.toLog();
-        sim.evaluate(3);
+        sim.evaluate(10);
         sim.toLog();
         List <Command> commands = sim.translate();
         
