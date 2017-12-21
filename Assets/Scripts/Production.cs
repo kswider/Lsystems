@@ -66,7 +66,7 @@ using System.Text;
 
             for(int i=0; i < Guards.Count(); i++)
             {
-                if (atom.Letter == Before && Guards[i].apply(atom.Parameters))
+                if (atom.GetLetter() == Before && Guards[i].apply(atom.GetParameters()))
                 {
                     isOK = true;
                 }

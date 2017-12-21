@@ -39,11 +39,15 @@ public class TurtleController : MonoBehaviour
         Stack<LineRenderer> _lineRendererStack = new Stack<LineRenderer>();
         */
 
-        // Creating sentence to draw
-        Simulation sim = new Simulation(5);
-        sim.evaluate(10);
-        List <Command> commands = sim.translate();
+        //Atom a = new Atom('A', new List<double> { 2.0, 4.9 });
+        //Debug.Log("JSON: " + JsonUtility.ToJson(a).ToString());
 
+        // Creating sentence to draw
+        Simulation sim = new Simulation(1);
+        sim.toLog();
+        sim.evaluate(3);
+        sim.toLog();
+        List <Command> commands = sim.translate();
         
         foreach (Command command in commands)
         {
@@ -131,7 +135,7 @@ public class TurtleController : MonoBehaviour
             }
             */
         }
-    }
+    } 
     
     /* 2D
     private void DrawLine(int index)
