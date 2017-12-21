@@ -329,14 +329,14 @@ class Simulation
         return ret;
         }
 
-        public void toString()
+        public void toLog()
         {
         String tmp = "";
             foreach(Atom atom in currState)
             {
-                tmp += atom.Letter;
+                tmp += atom.GetLetter();
             }
-        Debug.Log(tmp);
+        Debug.Log("Result: " + tmp);
         }   
 
         /// <summary>
@@ -381,9 +381,9 @@ class Simulation
             List<Command> ret = new List<Command>();
             foreach (Atom atom in currState)
             {
-                Debug.Log(atom.Letter);
-                FutureCommand listing = dictionary[atom.Letter];
-                ret.Add(listing.evaluate(atom.Parameters));
+                Debug.Log(atom.GetLetter());
+                FutureCommand listing = dictionary[atom.GetLetter()];
+                ret.Add(listing.evaluate(atom.GetParameters()));
             }
 
             return ret;

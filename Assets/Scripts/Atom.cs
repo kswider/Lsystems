@@ -6,23 +6,40 @@ using System.Text;
 /// <summary>
 /// Simple class representing atom in l-system state
 /// </summary>
+    [Serializable]
     class Atom
     {
+    [UnityEngine.SerializeField]
+    private char letter;
 
-        public Char Letter { get; }
+    public char GetLetter()
+    {
+        return letter;
+    }
 
-        public List<Double> Parameters { get; set; }
-        
+    [UnityEngine.SerializeField]
+    private List<double> parameters;
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="letter">Letter used to define atom</param>
-        /// <param name="parameters">List of arguments applied to atom</param>
-        public Atom(char letter, List<double> parameters)
+    public List<double> GetParameters()
+    {
+        return parameters;
+    }
+
+    public void SetParameters(List<double> value)
+    {
+        parameters = value;
+    }
+
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    /// <param name="letter">Letter used to define atom</param>
+    /// <param name="parameters">List of arguments applied to atom</param>
+    public Atom(char letter, List<double> parameters)
         {
-            Letter = letter;
-            Parameters = parameters;
+        this.letter = letter;
+        SetParameters(parameters);
         }
 
         /// <summary>
@@ -32,6 +49,6 @@ using System.Text;
         /// <returns>Atoms created by the Production p</returns>
         public List<Atom> apply(Production p)
         {
-            return p.getAfter(Parameters);
+            return p.getAfter(GetParameters());
         }
     }
