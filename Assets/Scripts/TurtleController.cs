@@ -151,7 +151,6 @@ public class TurtleController : MonoBehaviour
     {
         GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         cylinder.GetComponent<MeshRenderer>().material = material;
-
         Vector3 newScale = cylinder.transform.localScale;
         newScale.y = Vector3.Distance(lastPosition, newPosition) / 2;
         newScale.x = scale;
