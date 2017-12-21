@@ -61,7 +61,7 @@ class Simulation
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
-        }else if(egNum == 2)
+        } else if (egNum == 2)
         {
             currState = new List<Atom> { new Atom('X', new List<double>()) };
 
@@ -152,7 +152,7 @@ class Simulation
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('X', new FutureCommand("Do nothing", new List<Equation>()));
-            }
+        }
         else if (egNum == 4)
         {
             currState = new List<Atom> { new Atom('F', new List<double>()) };
@@ -196,32 +196,33 @@ class Simulation
         }
         else if (egNum == 5)
         {
-            currState = new List<Atom> { new Atom('A', new List<double> {1,0.5 }) };
+            currState = new List<Atom> { new Atom('A', new List<double> { 1, 0.5 }) };
 
             //variables used in productions
             double r1 = 0.9;
             double r2 = 0.6;
             double a0 = 45;
             double a2 = 45;
-            foreach(KeyValuePair<string,double> parameter in Scenes.getSceneParameters())
-            {
-                switch (parameter.Key)
+            if (Scenes.getSceneParameters() != null) {
+                foreach (KeyValuePair<string, double> parameter in Scenes.getSceneParameters())
                 {
-                    case "r1":
-                        r1 = parameter.Value;
-                    break;
-                    case "r2":
-                        r2 = parameter.Value;
-                    break;
-                    case "a0":
-                        a0 = parameter.Value;
-                        break;
-                    case "a2":
-                        a2 = parameter.Value;
-                        break;
+                    switch (parameter.Key)
+                    {
+                        case "r1":
+                            r1 = parameter.Value;
+                            break;
+                        case "r2":
+                            r2 = parameter.Value;
+                            break;
+                        case "a0":
+                            a0 = parameter.Value;
+                            break;
+                        case "a2":
+                            a2 = parameter.Value;
+                            break;
+                    }
                 }
             }
-
             double d = 137.5;
             double wr = 0.707;
 
