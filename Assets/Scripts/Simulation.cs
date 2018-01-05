@@ -301,47 +301,24 @@ class Simulation
             }
         }
 
-        public static List<Atom> generateStateFromSting(String state)
+    /// <summary>
+    /// Generates List of Atom from String with proper pattern
+    /// </summary>
+    /// <param name="atomStr">String representation of 'state' e.g. A(1,2,3)B(4)C(5)DF</param>
+    /// <returns>Result List of Atom or empty List if string is not valid </returns>
+    public static List<Atom> GenerateStateFromSting(String state)
         {
             List<Atom> ret = new List<Atom>();
 
-            String pattern = @"(\w)(\(([0-9]+(\.[0-9]+)?)(,([0-9]+(\.[0-9]+))?)*\))?";
+            String pattern = @"[A-Z](\(([0-9]+(\.[0-9]+)?)(,([0-9]+(\.[0-9]+))?)*\))?";
             Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
             Match m = regex.Match(state);
 
             while (m.Success)
             {
-                Group g1 = m.Groups[1];
-                Group g2 = m.Groups[2];
+                Group g1 = m.Groups[0];
 
-                //Atom letter
-                CaptureCollection cc1 = g1.Captures;
-                Capture letter = cc1[0];
-
-                //Atom args
-                List<Double> nParams = new List<Double>();
-                CaptureCollection cc2 = g2.Captures;
-                for (int j = 0; j < cc2.Count; j++)
-                {
-                    Capture c2 = cc2[j];
-
-                    String pattern2 = @"[0-9]+(\.[0-9]+)?";
-                    Regex regex2 = new Regex(pattern2, RegexOptions.IgnoreCase);
-                    Match m2 = regex2.Match(c2.ToString());
-                    while (m2.Success)
-                    {
-                        Group g3 = m2.Groups[0];
-                        CaptureCollection cc3 = g3.Captures;
-                        for (int l = 0; l < cc3.Count; l++)
-                        {
-                            Capture c3 = cc3[l];
-                            nParams.Add(Convert.ToDouble(c3.ToString()));
-                        }
-
-                        ret.Add(new Atom(letter.ToString()[0], nParams));
-                        m2 = m2.NextMatch();
-                    }
-                }
+                ret.Add(Atom.GenerateAtomFromString(g1.ToString()));
 
                 m = m.NextMatch();
             }
@@ -349,7 +326,44 @@ class Simulation
         return ret;
         }
 
-        public void toLog()
+    /// <summary>
+    /// Generates List of FutureAtom from String with proper pattern
+    /// </summary>
+    /// <param name="atomStr">String representation of 'future state' e.g. A(t1,t2)B(5)CD(t3-1)</param>
+    /// <returns>Result List of FutureAtom or empty List if string is not valid </returns>
+    public static List<FutureAtom> GenerateFutureStateFromSting(String state)
+    {
+        List<FutureAtom> ret = new List<FutureAtom>();
+        int start = 0;
+        int length = 0;
+        int braketsCount = 0;
+
+        for(int i = 1; i < state.Length; )
+        {
+            if (state[i++] == '(')
+            {
+                start = i - 1;
+                while(!(state[i] == ')' && braketsCount == 0))
+                {
+                    if (state[i] == '(') braketsCount++;
+                    if (state[i] == ')') braketsCount--;
+                    length++;
+                    i++;
+
+                    if (i > state.Length - 1 || braketsCount < 0) return new List<FutureAtom>();
+                }
+
+                ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(start, length)));
+            } else
+            {
+                ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(start - 1, 1)));
+            }
+        }
+        
+        return ret;
+    }
+
+    public void toLog()
         {
         String tmp = "";
             foreach(Atom atom in currState)
