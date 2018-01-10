@@ -149,16 +149,23 @@ public class TurtleController : MonoBehaviour
 
     private void DrawLine(Vector3 lastPosition, Vector3 newPosition)
     {
-        GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinder.GetComponent<MeshRenderer>().material = material;
-        Vector3 newScale = cylinder.transform.localScale;
-        newScale.y = Vector3.Distance(lastPosition, newPosition) / 2;
-        newScale.x = scale;
-        newScale.z = scale;
-        cylinder.transform.localScale = newScale;
+        //GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        //cylinder.GetComponent<MeshRenderer>().material = material;
+        //float distance = Vector3.Distance(newPosition,lastPosition);
+        GameObject cone = CreateCone.Create(1, scale, scale * 0.707f);
+        cone.GetComponent<MeshRenderer>().material = material;
+        //Vector3 newScale = cylinder.transform.localScale;
+        Vector3 newScale = cone.transform.localScale;
+        newScale.y = Vector3.Distance(lastPosition, newPosition);
+        //newScale.x = scale;
+        //newScale.z = scale;
+        //cylinder.transform.localScale = newScale;
+        cone.transform.localScale = newScale;
 
-        cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
-        cylinder.transform.up = newPosition - lastPosition;
-        
+        cone.transform.position = lastPosition;
+        cone.transform.up = newPosition - lastPosition ;
+        //cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
+        //cylinder.transform.up = newPosition - lastPosition;
+
     }
 }
