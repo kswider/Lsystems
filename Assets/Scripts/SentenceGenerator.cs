@@ -1,11 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts;
 
-namespace Assets.Scripts
-{
-    class SentenceGenerator
+    public class SentenceGenerator
     {
         public List<OldRule> Rules { get; set; }
 
@@ -13,25 +10,24 @@ namespace Assets.Scripts
         {
             Rules = new List<OldRule>();
         }
-        public string generate(string input)
+    public string generate(string input)
+    {
+        string nextSentence = "";
+        foreach (char letter in input)
         {
-            string nextSentence = "";
-            foreach (char letter in input)
+            bool applicated = false;
+            foreach (OldRule rule in Rules)
             {
-                bool applicated = false;
-                foreach (OldRule rule in Rules)
+                if (letter.Equals(rule.before))
                 {
-                    if (letter.Equals(rule.before))
-                    {
-                        nextSentence += rule.after;
-                        applicated = true;
-                        break;
-                    }
+                    nextSentence += rule.after;
+                    applicated = true;
+                    break;
                 }
-                if (!applicated)
-                    nextSentence += letter;
             }
-            return nextSentence;
+            if (!applicated)
+                nextSentence += letter;
         }
+        return nextSentence;
     }
 }

@@ -7,7 +7,7 @@ using System.Text;
     /// <summary>
     /// Class representing a rule which can be evaluated to boolean value
     /// </summary>
-    class Rule
+    public class Rule
     {
         private String rule;
 

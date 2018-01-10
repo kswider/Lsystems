@@ -1,5 +1,4 @@
-﻿using Assets.Scripts;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Class responsible for simulating L-Systems
 /// </summary>
-class Simulation
+public class Simulation
     {
         public List<Atom> currState;
         public List<Production> productions;
@@ -61,7 +60,8 @@ class Simulation
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
             dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
-        } else if (egNum == 2)
+        }
+        else if (egNum == 2)
         {
             currState = new List<Atom> { new Atom('X', new List<double>()) };
 
@@ -203,8 +203,9 @@ class Simulation
             double r2 = 0.6;
             double a0 = 45;
             double a2 = 45;
-            if (Scenes.getSceneParameters() != null) {
-                foreach (KeyValuePair<string, double> parameter in Scenes.getSceneParameters())
+            if (Scenes.Parameters != null)
+            {
+                foreach (KeyValuePair<string, double> parameter in Scenes.Parameters)
                 {
                     switch (parameter.Key)
                     {
@@ -293,12 +294,31 @@ class Simulation
             dictionary.Add('A', new FutureCommand("Do nothing", new List<Equation>()));
             dictionary.Add('B', new FutureCommand("Do nothing", new List<Equation>()));
         }
+        else if (egNum == 6)
+        {
+            currState = Scenes.StartingSequence;
+            productions = Scenes.Productions;
+
+            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('!', new FutureCommand("Change width", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("(-1)*t0") }));
+            dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
+            dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
+            dictionary.Add('$', new FutureCommand("Dollar rotation", new List<Equation>()));
+            dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("(-1)*t0") }));
+            dictionary.Add('C', new FutureCommand("Do nothing", new List<Equation>()));
+            dictionary.Add('A', new FutureCommand("Do nothing", new List<Equation>()));
+            dictionary.Add('B', new FutureCommand("Do nothing", new List<Equation>()));
+        }
         else
-            {
-                currState = null;
-                productions = null;
-                dictionary = null;
-            }
+        {
+            currState = null;
+            productions = null;
+            dictionary = null;
+        }
         }
 
     /// <summary>

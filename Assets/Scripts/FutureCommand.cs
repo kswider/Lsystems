@@ -6,7 +6,7 @@ using System.Text;
     /// <summary>
     /// Something that may become Command
     /// </summary>
-    class FutureCommand
+    public class FutureCommand
     {
         public String CommandName { get;  }
         public List<Equation> Equations { get; }

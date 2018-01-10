@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace Assets.Scripts
-{
-    class Orientation
+    public class Orientation
     {
         public Vector3 H { get; private set; }
         public Vector3 L { get; private set; }
@@ -47,5 +45,5 @@ namespace Assets.Scripts
             L = Vector3.Scale(V, H) / Vector3.Scale(V, H).magnitude;
             U = Vector3.Scale(H, L);
         }
-    }
+    
 }

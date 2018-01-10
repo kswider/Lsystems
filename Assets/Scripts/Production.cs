@@ -6,7 +6,7 @@ using System.Text;
     /// <summary>
     /// Class representing production with features such as probability, guard and parameters.
     /// </summary>
-    class Production
+    public class Production
     {
         public List<Rule> Guards { get; }
         public Char Before { get; }

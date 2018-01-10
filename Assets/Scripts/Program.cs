@@ -6,7 +6,7 @@ using System.Text;
     /// <summary>
     /// Class for some simple tests 
     /// </summary>
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {

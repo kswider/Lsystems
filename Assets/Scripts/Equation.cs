@@ -8,7 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Class used to evaluate values of equations given in string format
 /// </summary>
-class Equation
+public class Equation
     {
         private String equation;
 

@@ -6,7 +6,7 @@ using System.Text;
     /// <summary>
     /// Class representing simple production. Never used as stand alone class (only applied to Production)
     /// </summary>
-    class SimpleProduction
+    public class SimpleProduction
     {
         public List<FutureAtom> After;
         public Double Probability { get; }

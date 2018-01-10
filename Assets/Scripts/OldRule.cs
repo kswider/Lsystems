@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.Scripts
-{
-    class OldRule
+    public class OldRule
     {
         public char before { get; set; }
         public string after { get; set; }
@@ -14,5 +12,4 @@ namespace Assets.Scripts
             this.before = before;
             this.after = after;
         }
-    }
 }

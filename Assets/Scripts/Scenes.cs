@@ -6,9 +6,11 @@ using UnityEngine.SceneManagement;
 public static class Scenes
 {
 
-    private static Dictionary<char, string> rules;
-    private static string startingSentence;
-    private static Dictionary<string,double> parameters;
+    public static Dictionary<char, string> Rules { get; set; }
+    public static List<Atom> StartingSequence { get; set; }
+    public static int Steps { get; set; }
+    public static Dictionary<string, double> Parameters { get; set; }
+    public static List<Production> Productions { get; set; }
     public static void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
@@ -16,41 +18,10 @@ public static class Scenes
 
     public static void Load(string sceneName, char paramKey, string paramValue)
     {
-        Scenes.rules = new Dictionary<char, string>();
-        Scenes.rules.Add(paramKey, paramValue);
+        Scenes.Rules = new Dictionary<char, string>();
+        Scenes.Rules.Add(paramKey, paramValue);
         SceneManager.LoadScene(sceneName);
     }
 
-    public static string getSceneStartingSentence()
-    {
-        return startingSentence;
-    }
 
-    public static void setSceneStartingSentence(string startingSentence)
-    {
-        Scenes.startingSentence = startingSentence;
-    }
-
-    public static Dictionary<char, string> getSceneRules()
-    {
-        return rules;
-    }
-
-    public static void addRule(char paramKey, string paramValue)
-    {
-        if (rules == null)
-            Scenes.rules = new Dictionary<char, string>();
-        Scenes.rules.Add(paramKey, paramValue);
-    }
-
-    public static Dictionary<string, double> getSceneParameters()
-    {
-        return parameters;
-    }
-    public static void addParameter(string paramKey, double paramValue)
-    {
-        if (parameters == null)
-            parameters = new Dictionary<string, double>();
-        parameters.Add(paramKey, paramValue);
-    }
 }

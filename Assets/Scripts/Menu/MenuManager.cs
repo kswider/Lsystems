@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,13 +30,13 @@ public class MenuManager : MonoBehaviour {
 
     void StartDrawing()
     {
-        Scenes.setSceneStartingSentence(_startingSequenceInputField.text);
+        //Scenes.StartingSequence = _startingSequenceInputField.text;
         Scenes.Load("main");
     }
 
     private void AddRule()
     {
-        Scenes.addRule(_beforeInputField.text[0], _afterInputField.text);
+        Scenes.Rules.Add(_beforeInputField.text[0], _afterInputField.text);
         _beforeInputField.text = "";
         _afterInputField.text = "";
     }

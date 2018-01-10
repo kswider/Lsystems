@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.Scripts;
 using System;
 
 
@@ -43,9 +42,9 @@ public class TurtleController : MonoBehaviour
         //Debug.Log("JSON: " + JsonUtility.ToJson(a).ToString());
 
         // Creating sentence to draw
-        Simulation sim = new Simulation(5);
+        Simulation sim = new Simulation(6);
         sim.toLog();
-        sim.evaluate(10);
+        sim.evaluate(Scenes.Steps);
         sim.toLog();
         List <Command> commands = sim.translate();
         

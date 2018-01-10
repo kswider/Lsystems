@@ -6,7 +6,7 @@ using System.Text;
     /// <summary>
     /// Class representing command recognized by drawing classes
     /// </summary>
-    class Command
+    public class Command
     {
         public String CommandName { get; }
         public List<Double> parameters { get; }

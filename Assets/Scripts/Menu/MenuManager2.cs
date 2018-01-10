@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
-using Assets.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
 public class MenuManager2 : MonoBehaviour
 {
+    [SerializeField]
+    private InputField startingSequenceInputField;
+    [SerializeField]
+    private InputField stepsInputField;
+    [SerializeField]
+    private Button startButton;
     [SerializeField]
     private Button addNextProductionButton;
     [SerializeField]
@@ -27,11 +33,15 @@ public class MenuManager2 : MonoBehaviour
         //cone.GetComponent<MeshRenderer>().material = material;
         productions = new List<GameObject>();
         addNextProductionButton.onClick.AddListener(AddNextProduction);
+        startButton.onClick.AddListener(StartSimulation);
+        Scenes.Productions = new List<Production>();
        // parameters1Button.onClick.AddListener(delegate { StartDrawing(1); });
        // parameters2Button.onClick.AddListener(delegate { StartDrawing(2); });
        // parameters3Button.onClick.AddListener(delegate { StartDrawing(3); });
        // parameters4Button.onClick.AddListener(delegate { StartDrawing(4); });
     }
+
+
 
     private void AddNextProduction()
     {  
@@ -60,33 +70,56 @@ public class MenuManager2 : MonoBehaviour
         Destroy(newAfter);
     }
 
+    private void StartSimulation()
+    {
+        
+        Scenes.StartingSequence = Simulation.GenerateStateFromSting(startingSequenceInputField.text);
+        Scenes.Steps = Int32.Parse(stepsInputField.text);
+        foreach(GameObject productionGameObject in productions)
+        {
+            char before = productionGameObject.transform.Find("Header/Before/BeforeInputField").GetComponent<InputField>().text[0];
+            List<Rule> guards = new List<Rule> { new Rule(productionGameObject.transform.Find("Header/Guard/GuardInputField").GetComponent<InputField>().text) };
+            List<SimpleProduction> simpleProductions = new List<SimpleProduction>();
+            foreach (Transform afterGameObject in productionGameObject.GetComponentsInChildren<Transform>().Where(t => t.name == "After(Clone)"))
+            {
+                String afterString = afterGameObject.Find("State/StateInputField").GetComponent<InputField>().text;
+                double probability = Double.Parse(afterGameObject.Find("Probability/ProbabilityInputField").GetComponent<InputField>().text);
+                simpleProductions.Add(new SimpleProduction(Simulation.GenerateFutureStateFromSting(afterString),probability));
+            }
+
+            Scenes.Productions.Add(new Production(guards, before, simpleProductions));
+        }
+        Scenes.Load("main");
+
+    }
+
     void StartDrawing(int treeNumber)
     {
         switch (treeNumber)
         {
             case 1:
-                Scenes.addParameter("r1", 0.9);
-                Scenes.addParameter("r2", 0.6);
-                Scenes.addParameter("a0", 45);
-                Scenes.addParameter("a2", 45);
+                Scenes.Parameters.Add("r1", 0.9);
+                Scenes.Parameters.Add("r2", 0.6);
+                Scenes.Parameters.Add("a0", 45);
+                Scenes.Parameters.Add("a2", 45);
                 break;
             case 2:
-                Scenes.addParameter("r1", 0.9);
-                Scenes.addParameter("r2", 0.9);
-                Scenes.addParameter("a0", 45);
-                Scenes.addParameter("a2", 45);
+                Scenes.Parameters.Add("r1", 0.9);
+                Scenes.Parameters.Add("r2", 0.9);
+                Scenes.Parameters.Add("a0", 45);
+                Scenes.Parameters.Add("a2", 45);
                 break;
             case 3:
-                Scenes.addParameter("r1", 0.9);
-                Scenes.addParameter("r2", 0.8);
-                Scenes.addParameter("a0", 45);
-                Scenes.addParameter("a2", 45);
+                Scenes.Parameters.Add("r1", 0.9);
+                Scenes.Parameters.Add("r2", 0.8);
+                Scenes.Parameters.Add("a0", 45);
+                Scenes.Parameters.Add("a2", 45);
                 break;
             case 4:
-                Scenes.addParameter("r1", 0.9);
-                Scenes.addParameter("r2", 0.7);
-                Scenes.addParameter("a0", 30);
-                Scenes.addParameter("a2", -30);
+                Scenes.Parameters.Add("r1", 0.9);
+                Scenes.Parameters.Add("r2", 0.7);
+                Scenes.Parameters.Add("a0", 30);
+                Scenes.Parameters.Add("a2", -30);
                 break;
         }
         Scenes.Load("main");

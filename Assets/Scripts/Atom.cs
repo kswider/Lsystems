@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 /// Simple class representing atom in l-system state
 /// </summary>
 [Serializable]
-    class Atom
+    public class Atom
     {
     [UnityEngine.SerializeField]
     private char letter;

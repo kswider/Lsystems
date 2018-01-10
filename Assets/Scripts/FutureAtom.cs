@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 /// <summary>
 /// Something that may become Atom
 /// </summary>
-class FutureAtom
+public class FutureAtom
     {
         public Char Letter { get; }
         public List<Equation> Equations { get; }
