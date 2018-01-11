@@ -7,37 +7,21 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour {
 
     [SerializeField]
-    private Button _startButton;
+    private Button inputMenuButton;
     [SerializeField]
-    private Button _addRuleButton;
+    private Button chooseSimulationMenuButton;
     [SerializeField]
-    private InputField _startingSequenceInputField;
-    [SerializeField]
-    private InputField _beforeInputField;
-    [SerializeField]
-    private InputField _afterInputField;
+    private Button exitButton;
 
     // Use this for initialization
     void Start () {
-        _startButton.onClick.AddListener(StartDrawing);
-        _addRuleButton.onClick.AddListener(AddRule);
+        inputMenuButton.onClick.AddListener(delegate { Scenes.Load("menu2"); });
+        chooseSimulationMenuButton.onClick.AddListener(delegate { Scenes.Load("menu2"); });
+        exitButton.onClick.AddListener(delegate { Application.Quit(); });
 	}
 
     // Update is called once per frame
     void Update () {
 		
 	}
-
-    void StartDrawing()
-    {
-        //Scenes.StartingSequence = _startingSequenceInputField.text;
-        Scenes.Load("main");
-    }
-
-    private void AddRule()
-    {
-        Scenes.Rules.Add(_beforeInputField.text[0], _afterInputField.text);
-        _beforeInputField.text = "";
-        _afterInputField.text = "";
-    }
 }

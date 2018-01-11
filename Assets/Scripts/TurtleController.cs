@@ -156,7 +156,7 @@ public class TurtleController : MonoBehaviour
         newScale.x = scale;
         newScale.z = scale;
         cylinder.transform.localScale = newScale;
-        cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 1f);
+        cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
         cylinder.transform.up = newPosition - lastPosition;
         */
 

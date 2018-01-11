@@ -41,15 +41,6 @@ public class Equation
 
             Debug.Log(replacedPattern);
             Expression e = new Expression(replacedPattern);
-            try
-            {
-                Double ret = (Double)e.Evaluate();
-                return ret;
-            } catch (InvalidCastException exc)
-            {
-                Double ret = (Double)((int)e.Evaluate());
-                return ret;
-            }
-        
+            return Convert.ToDouble(e.Evaluate()); 
         }
     }
