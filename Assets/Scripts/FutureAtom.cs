@@ -8,10 +8,25 @@ using UnityEngine;
 /// <summary>
 /// Something that may become Atom
 /// </summary>
+[Serializable]
 public class FutureAtom
     {
-        public Char Letter { get; }
-        public List<Equation> Equations { get; }
+
+    [UnityEngine.SerializeField]
+    private char letter;
+
+    public char GetLetter()
+    {
+        return letter;
+    }
+
+    [UnityEngine.SerializeField]
+    private List<Equation> equations;
+
+    public List<Equation> GetEquations()
+    {
+        return equations;
+    }
 
     /// <summary>
     /// Default constructor
@@ -20,8 +35,8 @@ public class FutureAtom
     /// <param name="equations">List of equations. According to them we can evaluate new Atom.</param>
     public FutureAtom(char letter, List<Equation> equations)
         {
-            Letter = letter;
-            Equations = equations;
+            this.letter = letter;
+            this.equations = equations;
         }
 
     /// <summary>
@@ -43,6 +58,10 @@ public class FutureAtom
                 nParams.Add(new Equation(equationsStrArray[i]));
             }
 
+            foreach (Equation eq in nParams)
+            {
+                Debug.Log(eq.equation);
+            }
             return new FutureAtom(atomStr[0], nParams);
         }
         else if (atomStr.Length == 1)
@@ -59,11 +78,11 @@ public class FutureAtom
     public Atom evaluate(List<Double> args)
         {
             List<Double> nParameters = new List<double>();
-            for (int i = 0; i < Equations.Count(); i++)
+            for (int i = 0; i < GetEquations().Count(); i++)
             {
-                nParameters.Add(Equations[i].apply(args));
+                nParameters.Add(GetEquations()[i].apply(args));
             }
 
-            return new Atom(this.Letter, nParameters);
+            return new Atom(this.GetLetter(), nParameters);
         }
     }

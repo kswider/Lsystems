@@ -7,9 +7,12 @@ using System.Text;
     /// <summary>
     /// Class representing a rule which can be evaluated to boolean value
     /// </summary>
+    [Serializable]
     public class Rule
     {
-        private String rule;
+
+    [UnityEngine.SerializeField]
+    private String rule;
 
     /// <summary>
     /// Default Constructor

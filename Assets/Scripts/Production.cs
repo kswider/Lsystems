@@ -6,23 +6,45 @@ using System.Text;
     /// <summary>
     /// Class representing production with features such as probability, guard and parameters.
     /// </summary>
+    [Serializable]
     public class Production
     {
-        public List<Rule> Guards { get; }
-        public Char Before { get; }
-        public List<SimpleProduction> After { get; }
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        /// <param name="guards">Defines rules when atom can or can not be applied to production</param>
-        /// <param name="before">Defines letter by which we recognize atoms that can be applied to production</param>
-        /// <param name="after">Defines list of possible results of productions. Sum of probabilities in this lists must be equal to 1.0</param>
-        public Production(List<Rule> guards, char before, List<SimpleProduction> after)
+    [UnityEngine.SerializeField]
+    private List<Rule> guards;
+
+    public List<Rule> GetGuards()
+    {
+        return guards;
+    }
+
+    [UnityEngine.SerializeField]
+    private char before;
+
+    public char GetBefore()
+    {
+        return before;
+    }
+
+    [UnityEngine.SerializeField]
+    private List<SimpleProduction> after;
+
+    public List<SimpleProduction> GetAfter()
+    {
+        return after;
+    }
+
+    /// <summary>
+    /// Default constructor
+    /// </summary>
+    /// <param name="guards">Defines rules when atom can or can not be applied to production</param>
+    /// <param name="before">Defines letter by which we recognize atoms that can be applied to production</param>
+    /// <param name="after">Defines list of possible results of productions. Sum of probabilities in this lists must be equal to 1.0</param>
+    public Production(List<Rule> guards, char before, List<SimpleProduction> after)
         {
-            Guards = guards;
-            Before = before;
-            After = after;
+            this.guards = guards;
+            this.before = before;
+            this.after = after;
         }
 
 
@@ -40,12 +62,12 @@ using System.Text;
             List<Double> nParameters = new List<Double>();
             List<Atom> ret = new List<Atom>();
 
-            for (int i=0; i < After.Count; i++)
+            for (int i=0; i < GetAfter().Count; i++)
             {
-                acc += After[i].Probability;
+                acc += GetAfter()[i].GetProbability();
                 if(randDouble <= acc)
                 {
-                    foreach(FutureAtom nAtom in After[i].After)
+                    foreach(FutureAtom nAtom in GetAfter()[i].GetAfter())
                     {
                         ret.Add(nAtom.evaluate(parameters));
                     }
@@ -64,9 +86,9 @@ using System.Text;
         {
             Boolean isOK = false;
 
-            for(int i=0; i < Guards.Count(); i++)
+            for(int i=0; i < GetGuards().Count(); i++)
             {
-                if (atom.GetLetter() == Before && Guards[i].apply(atom.GetParameters()))
+                if (atom.GetLetter() == GetBefore() && GetGuards()[i].apply(atom.GetParameters()))
                 {
                     isOK = true;
                 }

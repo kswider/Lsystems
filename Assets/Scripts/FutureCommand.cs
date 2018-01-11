@@ -8,23 +8,36 @@ using System.Text;
     /// </summary>
     public class FutureCommand
     {
-        public String CommandName { get;  }
-        public List<Equation> Equations { get; }
+    [UnityEngine.SerializeField]
+    private string commandName;
 
-        public FutureCommand(string commandName, List<Equation> equations)
+    public string GetCommandName()
+    {
+        return commandName;
+    }
+
+    [UnityEngine.SerializeField]
+    private List<Equation> equations;
+
+    public List<Equation> GetEquations()
+    {
+        return equations;
+    }
+
+    public FutureCommand(string commandName, List<Equation> equations)
         {
-            CommandName = commandName;
-            Equations = equations;
+            this.commandName = commandName;
+            this.equations = equations;
         }
 
         public Command evaluate(List<Double> args)
         {
             List<Double> nParameters = new List<double>();
-            foreach(Equation eq in Equations)
+            foreach(Equation eq in GetEquations())
             {
                 nParameters.Add(eq.apply(args));
             }
 
-            return new Command(CommandName, nParameters);
+            return new Command(GetCommandName(), nParameters);
         }
     }

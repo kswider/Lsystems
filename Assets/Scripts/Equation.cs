@@ -8,8 +8,10 @@ using UnityEngine;
 /// <summary>
 /// Class used to evaluate values of equations given in string format
 /// </summary>
+[Serializable]
 public class Equation
     {
+        [SerializeField]
         public String equation;
 
         /// <summary>
