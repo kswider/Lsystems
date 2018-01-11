@@ -32,9 +32,9 @@ public class FutureAtom
     public static FutureAtom GenerateFutureAtomFromString(String atomStr)
     {
         Debug.Log(atomStr);
-        if ((atomStr.Length > 1 && (atomStr[1] != '(' || atomStr.Last() != ')')) || atomStr.Length == 0)
+        if ((atomStr.Length > 1 && atomStr[1] == '(' && atomStr.Last() == ')'))
         {
-            String[] equationsStrArray = atomStr.Substring(1, atomStr.Length - 3).Split(',');
+            String[] equationsStrArray = atomStr.Substring(2, atomStr.Length - 3).Split(',');
 
             List<Equation> nParams = new List<Equation>();
 
@@ -44,6 +44,10 @@ public class FutureAtom
             }
 
             return new FutureAtom(atomStr[0], nParams);
+        }
+        else if (atomStr.Length == 1)
+        {
+            return new FutureAtom(atomStr[0], new List<Equation>());
         }
         else return null;
     }

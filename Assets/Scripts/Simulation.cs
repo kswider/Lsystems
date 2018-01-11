@@ -330,7 +330,7 @@ public class Simulation
         {
             List<Atom> ret = new List<Atom>();
 
-            String pattern = @"[A-Z](\(([0-9]+(\.[0-9]+)?)(,([0-9]+(\.[0-9]+))?)*\))?";
+            String pattern = @"\w(\([0-9]+(\.[0-9]*)?(,[0-9]+(\.[0-9]*)?)*\))?";
             Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
             Match m = regex.Match(state);
 
@@ -354,48 +354,34 @@ public class Simulation
     public static List<FutureAtom> GenerateFutureStateFromSting(String state)
     {
         List<FutureAtom> ret = new List<FutureAtom>();
-        int start = 0;
-        int length = 0;
-        int braketsCount = 0;
 
-        for(int i = 1; i < state.Length; i++++)
+        for(int i = 0; i < state.Length; i++)
         {
-            start = i - 1;
-            braketsCount = 0;
-            length = 0;
-            if (state[i] == '(')
+            if(i != state.Length-1 && state[i+1] == '(')
             {
-                i++;
-                while(!(state[i] == ')' && braketsCount == 0))
-                {
-                    if (state[i] == '(') braketsCount++;
-                    if (state[i] == ')') braketsCount--;
-                    length++;
-                    i++;
+                int length = 2;
+                int parentesisCount = 1;
+                int start = i;
 
-                    if (i >= state.Length - 1 || braketsCount < 0) return new List<FutureAtom>();
+                for(int j = i+2; parentesisCount != 0; j++)
+                {
+                    if(j >= state.Length) return new List<FutureAtom>();
+                    if (state[j] == '(') parentesisCount++;
+                    else if (state[j] == ')') parentesisCount--;
+
+                    length++;
+                    i = j;
                 }
 
-                //Debug.Log(start + " " + length);
                 ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(start, length)));
             } else
             {
-                ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(start - 1, 1)));
+                ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(i,1)));
             }
         }
         
         return ret;
     }
-
-    public void toLog()
-        {
-        String tmp = "";
-            foreach(Atom atom in currState)
-            {
-                tmp += atom.GetLetter();
-            }
-        Debug.Log("Result: " + tmp);
-        }   
 
         /// <summary>
         /// Method aplying productions to current state of the system n times

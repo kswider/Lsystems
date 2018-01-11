@@ -43,9 +43,7 @@ public class TurtleController : MonoBehaviour
 
         // Creating sentence to draw
         Simulation sim = new Simulation(6);
-        sim.toLog();
         sim.evaluate(Scenes.Steps);
-        sim.toLog();
         List <Command> commands = sim.translate();
         
         foreach (Command command in commands)

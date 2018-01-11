@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 /// <summary>
 /// Simple class representing atom in l-system state
@@ -42,7 +43,11 @@ using System.Text.RegularExpressions;
         Regex regex = new Regex(pattern, RegexOptions.None);
         Match m = regex.Match(atomStr);
 
-        if (m.Success)
+        if(atomStr.Length == 1)
+        {
+            return new Atom(atomStr[0], new List<double>());
+        }
+        else if (m.Success)
         {
             Group g1 = m.Groups[0];
             Group g2 = m.Groups[1];
