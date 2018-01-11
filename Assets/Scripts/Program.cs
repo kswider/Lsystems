@@ -35,7 +35,7 @@ using System.Text;
             productions.Add(new Production(rl1, 'F',spl1));
             productions.Add(new Production(rl2, 'f', spl2));
 
-            Dictionary<Char, FutureCommand> dictionary = new Dictionary<char, FutureCommand>();
+            SerializableDictionary dictionary = new SerializableDictionary();
             List<Equation> empty = new List<Equation>();
 
             dictionary.Add('F', new FutureCommand("F", empty));

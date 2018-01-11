@@ -32,6 +32,7 @@ public class MenuManager2 : MonoBehaviour
         //Use something like this to generate start state
         Simulation.GenerateStateFromSting("A(2,3)BC(3)");
 
+        //Use something like this to serialize simulation
         Debug.Log(JsonUtility.ToJson(new Simulation(4)));
 
         //material = Resources.Load("Materials/Barks/Bark_b9", typeof(Material)) as Material;

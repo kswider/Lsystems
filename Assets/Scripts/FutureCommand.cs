@@ -6,6 +6,7 @@ using System.Text;
     /// <summary>
     /// Something that may become Command
     /// </summary>
+    [Serializable]
     public class FutureCommand
     {
     [UnityEngine.SerializeField]

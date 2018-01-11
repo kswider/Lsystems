@@ -16,7 +16,9 @@ public class Simulation
         [SerializeField]
         public List<Production> productions;
         [SerializeField]
-        public Dictionary<Char, FutureCommand> dictionary;
+        public SerializableDictionary dictionary;
+
+        
 
         /// <summary>
         /// Default constructor
@@ -24,7 +26,7 @@ public class Simulation
         /// <param name="currState">Starting string exported to format of List of Atoms</param>
         /// <param name="productions">List of defined productions</param>
         /// <param name="dictionary">Dictionary used to translating atoms to commands</param>
-        public Simulation(List<Atom> currState, List<Production> productions, Dictionary<char, FutureCommand> dictionary)
+        public Simulation(List<Atom> currState, List<Production> productions, SerializableDictionary dictionary)
         {
             this.currState = currState;
             this.productions = productions;
@@ -58,7 +60,7 @@ public class Simulation
             productions = new List<Production>();
             productions.Add(p1);
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
@@ -100,7 +102,7 @@ public class Simulation
             productions.Add(p1);
             productions.Add(p2);
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("10.0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
@@ -149,7 +151,7 @@ public class Simulation
             productions.Add(p1);
             productions.Add(p2);
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("26.0") }));
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-26.0") }));
@@ -191,7 +193,7 @@ public class Simulation
             productions = new List<Production>();
             productions.Add(p1);
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("1.0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("22.5") }));
             dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("-22.5") }));
@@ -284,7 +286,7 @@ public class Simulation
             productions.Add(p2);
             productions.Add(p3);
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
             dictionary.Add('!', new FutureCommand("Change width", new List<Equation> { new Equation("t0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("t0") }));
@@ -303,7 +305,7 @@ public class Simulation
             currState = Scenes.StartingSequence;
             productions = Scenes.Productions;
 
-            dictionary = new Dictionary<char, FutureCommand>();
+            dictionary = new SerializableDictionary();
             dictionary.Add('F', new FutureCommand("Forward", new List<Equation> { new Equation("t0") }));
             dictionary.Add('!', new FutureCommand("Change width", new List<Equation> { new Equation("t0") }));
             dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("t0") }));
