@@ -59,7 +59,6 @@ using System.Text;
             Random random = new Random();
             Double randDouble = random.NextDouble();
             Double acc = 0;
-            List<Double> nParameters = new List<Double>();
             List<Atom> ret = new List<Atom>();
 
             for (int i=0; i < GetAfter().Count; i++)
