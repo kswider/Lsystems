@@ -26,6 +26,15 @@ public class MenuManager2 : MonoBehaviour
     private Material material;
     void Start()
     {
+        foreach(FutureAtom atom in Simulation.GenerateFutureStateFromSting("F(t1+5,t2+4)+(t1)FF"))
+        {
+            String tmp = atom.Letter + ": ";
+            foreach(Equation eq in atom.Equations)
+            {
+                tmp = tmp + eq.equation + ", ";
+            }
+            Debug.Log(tmp);
+        }
         //material = Resources.Load("Materials/Barks/Bark_b9", typeof(Material)) as Material;
         // GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
         //cylinder.GetComponent<MeshRenderer>().material = material;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 /// <summary>
 /// Something that may become Atom
@@ -30,6 +31,7 @@ public class FutureAtom
     /// <returns>Result FutureAtom or null if pattern doesnt match the string</returns>
     public static FutureAtom GenerateFutureAtomFromString(String atomStr)
     {
+        Debug.Log(atomStr);
         if ((atomStr.Length > 1 && (atomStr[1] != '(' || atomStr.Last() != ')')) || atomStr.Length == 0)
         {
             String[] equationsStrArray = atomStr.Substring(1, atomStr.Length - 3).Split(',');

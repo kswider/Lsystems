@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 public class Equation
     {
-        private String equation;
+        public String equation;
 
         /// <summary>
         /// Default Constructor

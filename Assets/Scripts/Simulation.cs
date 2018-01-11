@@ -358,11 +358,14 @@ public class Simulation
         int length = 0;
         int braketsCount = 0;
 
-        for(int i = 1; i < state.Length; )
+        for(int i = 1; i < state.Length; i++++)
         {
-            if (state[i++] == '(')
+            start = i - 1;
+            braketsCount = 0;
+            length = 0;
+            if (state[i] == '(')
             {
-                start = i - 1;
+                i++;
                 while(!(state[i] == ')' && braketsCount == 0))
                 {
                     if (state[i] == '(') braketsCount++;
@@ -370,9 +373,10 @@ public class Simulation
                     length++;
                     i++;
 
-                    if (i > state.Length - 1 || braketsCount < 0) return new List<FutureAtom>();
+                    if (i >= state.Length - 1 || braketsCount < 0) return new List<FutureAtom>();
                 }
 
+                //Debug.Log(start + " " + length);
                 ret.Add(FutureAtom.GenerateFutureAtomFromString(state.Substring(start, length)));
             } else
             {
