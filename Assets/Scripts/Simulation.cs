@@ -8,10 +8,14 @@ using UnityEngine;
 /// <summary>
 /// Class responsible for simulating L-Systems
 /// </summary>
+[Serializable]
 public class Simulation
     {
+        [SerializeField]
         public List<Atom> currState;
+        [SerializeField]
         public List<Production> productions;
+        [SerializeField]
         public Dictionary<Char, FutureCommand> dictionary;
 
         /// <summary>
@@ -330,7 +334,7 @@ public class Simulation
         {
             List<Atom> ret = new List<Atom>();
 
-            String pattern = @"\w(\([0-9]+(\.[0-9]*)?(,[0-9]+(\.[0-9]*)?)*\))?";
+            String pattern = @".(\([0-9]+(\.[0-9]*)?(,[0-9]+(\.[0-9]*)?)*\))?";
             Regex regex = new Regex(pattern, RegexOptions.IgnoreCase);
             Match m = regex.Match(state);
 

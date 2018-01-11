@@ -6,10 +6,25 @@ using System.Text;
     /// <summary>
     /// Class representing command recognized by drawing classes
     /// </summary>
+    [Serializable]
     public class Command
     {
-        public String CommandName { get; }
-        public List<Double> parameters { get; }
+
+    [UnityEngine.SerializeField]
+    private string commandName;
+
+    public string GetCommandName()
+    {
+        return commandName;
+    }
+
+    [UnityEngine.SerializeField]
+    private List<double> parameters;
+
+    public List<double> GetParameters()
+    {
+        return parameters;
+    }
 
     /// <summary>
     /// Default constructor
@@ -18,7 +33,7 @@ using System.Text;
     /// <param name="parameters">Parameters that might be applied to the command e.g. "rotate" 90</param>
     public Command(string commandName, List<double> parameters)
     {
-        CommandName = commandName;
+        this.commandName = commandName;
         this.parameters = parameters;
     }
 }

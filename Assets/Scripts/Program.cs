@@ -45,7 +45,7 @@ using System.Text;
 
             foreach (Command obj in sim.translate())
             {
-                Console.WriteLine(obj.CommandName);
+                Console.WriteLine(obj.GetCommandName());
             }
   //          Console.ReadKey();
 
@@ -53,7 +53,7 @@ using System.Text;
 
             foreach (Command obj in sim.translate())
             {
-                Console.WriteLine(obj.CommandName);
+                Console.WriteLine(obj.GetCommandName());
             }
          //   Console.ReadKey();
 
@@ -61,7 +61,7 @@ using System.Text;
 
             foreach (Command obj in sim.translate())
             {
-                Console.WriteLine(obj.CommandName);
+                Console.WriteLine(obj.GetCommandName());
             }
            // Console.ReadKey();
         }

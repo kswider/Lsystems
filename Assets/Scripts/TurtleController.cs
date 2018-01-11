@@ -49,25 +49,25 @@ public class TurtleController : MonoBehaviour
         foreach (Command command in commands)
         {
 
-            switch (command.CommandName)
+            switch (command.GetCommandName())
             {
                 // 3D
                 case "Forward":
                     newPosition = lastPosition;
-                    newPosition += orientation.H * (float)command.parameters[0];
+                    newPosition += orientation.H * (float)command.GetParameters()[0];
                     DrawLine(lastPosition, newPosition);
                     lastPosition = newPosition;
                     break;
                 case "Rotate U":
-                    delta = (float)command.parameters[0];
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateU(delta);
                     break;
                 case "Rotate L":
-                    delta = (float)command.parameters[0];
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateL(delta);
                     break;
                 case "Rotate H":
-                    delta = (float)command.parameters[0];
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateH(delta);
                     break;
                 case "Dollar rotation":
@@ -82,7 +82,7 @@ public class TurtleController : MonoBehaviour
                     orientation = orientationStack.Pop();
                     break;
                 case "Change width":
-                    scale = (float)command.parameters[0];
+                    scale = (float)command.GetParameters()[0];
                     break;
 
 
