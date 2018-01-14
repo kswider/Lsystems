@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TurtleController : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class TurtleController : MonoBehaviour
     private Orientation orientation;
     private float delta;
     private static Dictionary<char, string> parameters;
+
+    [SerializeField]
+    private Button goBackButton;
     /* it was used for 2D trees
     private Vector3 direction;
     private int count;
@@ -23,6 +27,7 @@ public class TurtleController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        goBackButton.onClick.AddListener(goBackToMenu);
         // parameters initialization
         lastPosition = new Vector3(0, 0, 0);
         Stack<Vector3> positionStack = new Stack<Vector3>();
@@ -42,7 +47,7 @@ public class TurtleController : MonoBehaviour
         //Debug.Log("JSON: " + JsonUtility.ToJson(a).ToString());
 
         // Creating sentence to draw
-        Simulation sim = new Simulation(6);
+        Simulation sim = new Simulation(Scenes.SimulationNumber);
         sim.evaluate(Scenes.Steps);
         List <Command> commands = sim.translate();
         
@@ -54,7 +59,7 @@ public class TurtleController : MonoBehaviour
                 // 3D
                 case "Forward":
                     newPosition = lastPosition;
-                    newPosition += orientation.H * (float)command.GetParameters()[0];
+                    newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
                     DrawLine(lastPosition, newPosition);
                     lastPosition = newPosition;
                     break;
@@ -82,7 +87,7 @@ public class TurtleController : MonoBehaviour
                     orientation = orientationStack.Pop();
                     break;
                 case "Change width":
-                    scale = (float)command.GetParameters()[0];
+                    scale = (float)command.GetParameters()[0] / 10;
                     break;
 
 
@@ -132,8 +137,14 @@ public class TurtleController : MonoBehaviour
             }
             */
         }
-    } 
-    
+    }
+
+    private void goBackToMenu()
+    {
+        GameObject.Find("MenuCanvas").GetComponent<Canvas>().enabled = true;
+        SceneManager.UnloadSceneAsync("main");
+    }
+
     /* 2D
     private void DrawLine(int index)
     {
@@ -149,6 +160,7 @@ public class TurtleController : MonoBehaviour
         // Cylinder approach
         /*
         GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        cylinder.transform.parent = gameObject.transform;
         cylinder.GetComponent<MeshRenderer>().material = material;
         float distance = Vector3.Distance(newPosition,lastPosition);
         Vector3 newScale = cylinder.transform.localScale;
@@ -163,6 +175,7 @@ public class TurtleController : MonoBehaviour
         // Cone approach
         
         GameObject cone = CreateCone.Create(1, scale, scale * 0.707f);
+        cone.transform.parent = gameObject.transform;
         cone.GetComponent<MeshRenderer>().material = material;       
         Vector3 newScale = cone.transform.localScale;
         newScale.y = Vector3.Distance(lastPosition, newPosition);        

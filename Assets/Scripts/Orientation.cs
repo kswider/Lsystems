@@ -41,9 +41,9 @@ using UnityEngine;
         }
         public void DollarRotation()
         {
-            Vector3 V = new Vector3(0, 1, 0);     
+            Vector3 V = new Vector3(0, 1, 0);
             L = Vector3.Scale(V, H) / Vector3.Scale(V, H).magnitude;
             U = Vector3.Scale(H, L);
-        }
+    }
     
 }

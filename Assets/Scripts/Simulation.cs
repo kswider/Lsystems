@@ -202,7 +202,7 @@ public class Simulation
         }
         else if (egNum == 5)
         {
-            currState = new List<Atom> { new Atom('A', new List<double> { 1, 0.5 }) };
+            currState = new List<Atom> { new Atom('A', new List<double> { 1, 10 }) };
 
             //variables used in productions
             double r1 = 0.9;
@@ -314,7 +314,7 @@ public class Simulation
             dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
             dictionary.Add('$', new FutureCommand("Dollar rotation", new List<Equation>()));
             dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
-            dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("(-1)*t0") }));
+            dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("t0") }));
             dictionary.Add('C', new FutureCommand("Do nothing", new List<Equation>()));
             dictionary.Add('A', new FutureCommand("Do nothing", new List<Equation>()));
             dictionary.Add('B', new FutureCommand("Do nothing", new List<Equation>()));

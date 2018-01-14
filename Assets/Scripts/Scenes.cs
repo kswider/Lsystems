@@ -5,23 +5,27 @@ using UnityEngine.SceneManagement;
 
 public static class Scenes
 {
-
+    public static int SimulationNumber { get; set; }
     public static Dictionary<char, string> Rules { get; set; }
     public static List<Atom> StartingSequence { get; set; }
     public static int Steps { get; set; }
     public static Dictionary<string, double> Parameters { get; set; }
     public static List<Production> Productions { get; set; }
-    public static void Load(string sceneName)
+    public static IEnumerator Load(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
-
-    public static void Load(string sceneName, char paramKey, string paramValue)
+    public static IEnumerator LoadAdditive(string sceneName)
     {
-        Scenes.Rules = new Dictionary<char, string>();
-        Scenes.Rules.Add(paramKey, paramValue);
-        SceneManager.LoadScene(sceneName);
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName,LoadSceneMode.Additive);
+        while (!async.isDone)
+        {
+            yield return null;
+        }
     }
-
 
 }
