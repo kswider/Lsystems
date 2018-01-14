@@ -1,11 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using UnityEngine.SceneManagement;
+using SFB;
+using UnityEditor;
+//using System.Runtime.InteropServices;
+
+
 public class MenuManager2 : MonoBehaviour
 {
+    /* TODO
+    [DllImport("user32.dll")]
+    private static extern void SaveFileDialog();
+    [DllImport("user32.dll")]
+    private static extern void OpenFileDialog();
+    */
+    [SerializeField]
+    private Button goBackButton;
+    [SerializeField]
+    private Canvas canvas;
     [SerializeField]
     private InputField startingSequenceInputField;
     [SerializeField]
@@ -14,6 +33,10 @@ public class MenuManager2 : MonoBehaviour
     private Button startButton;
     [SerializeField]
     private Button addNextProductionButton;
+    [SerializeField]
+    private Button loadFromJsonButton;
+    [SerializeField]
+    private Button saveToJsonButton;
     [SerializeField]
     private GameObject productionsGrid;
     [SerializeField]
@@ -35,31 +58,141 @@ public class MenuManager2 : MonoBehaviour
         //Use something like this to serialize simulation
         Debug.Log(JsonUtility.ToJson(new Simulation(4)));
 
-        //material = Resources.Load("Materials/Barks/Bark_b9", typeof(Material)) as Material;
-        // GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        //cylinder.GetComponent<MeshRenderer>().material = material;
-        //GameObject cone = CreateCone.Create(2, 1, 0.5f);
-        //cone.GetComponent<MeshRenderer>().material = material;
+        goBackButton.onClick.AddListener(delegate { SceneManager.LoadScene("menu"); });
         productions = new List<GameObject>();
-        addNextProductionButton.onClick.AddListener(AddNextProduction);
+        addNextProductionButton.onClick.AddListener(delegate { AddNextProduction(); });
         startButton.onClick.AddListener(StartSimulation);
-        Scenes.Productions = new List<Production>();
-       // parameters1Button.onClick.AddListener(delegate { StartDrawing(1); });
-       // parameters2Button.onClick.AddListener(delegate { StartDrawing(2); });
-       // parameters3Button.onClick.AddListener(delegate { StartDrawing(3); });
-       // parameters4Button.onClick.AddListener(delegate { StartDrawing(4); });
+        loadFromJsonButton.onClick.AddListener(LoadFromJson);
+        saveToJsonButton.onClick.AddListener(SaveToJson);
+        
     }
 
+    private void SaveToJson()
+    {
+        String path = EditorUtility.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
+        // TODO
+        //StandaloneFileBrowser.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
+        /*
+#if UNITY_EDITOR
+        path = EditorUtility.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
+#endif*/
+        /*
+#if UNITY_STANDALONE
+        System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
+        sfd.Filter = "JSON File|*.json";
+        sfd.Title = "Save Lsystem to JSON file";
+        sfd.ShowDialog();
+        path = sfd.FileName;
+#endif*/
+        if (path.Length != 0)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringWriter sw = new StringWriter();
+            using (JsonWriter writer = new JsonTextWriter(sw))
+            {
+                writer.WriteStartObject();
+                writer.WritePropertyName("Starting sequence");
+                writer.WriteValue(startingSequenceInputField.text);
+                writer.WritePropertyName("Steps");
+                writer.WriteValue(stepsInputField.text);
+                writer.WritePropertyName("Productions");
+                writer.WriteStartArray();
+                foreach(GameObject prod in productions)
+                {
+                    writer.WriteStartObject();
+                    writer.WritePropertyName("Before");
+                    writer.WriteValue(prod.transform.Find("Header/Before/BeforeInputField").GetComponent<InputField>().text[0]);
+                    writer.WritePropertyName("Guard");
+                    writer.WriteValue(prod.transform.Find("Header/Guard/GuardInputField").GetComponent<InputField>().text);
+                    writer.WritePropertyName("Afters");
+                    writer.WriteStartArray();
+                    foreach (Transform afterGameObject in prod.GetComponentsInChildren<Transform>().Where(t => t.name == "After(Clone)"))
+                    {
+                        writer.WriteStartObject();
+                        writer.WritePropertyName("Probability");
+                        writer.WriteValue(afterGameObject.Find("Probability/ProbabilityInputField").GetComponent<InputField>().text);
+                        writer.WritePropertyName("State");
+                        writer.WriteValue(afterGameObject.Find("State/StateInputField").GetComponent<InputField>().text);
+                        writer.WriteEndObject();
+                    }
+                    writer.WriteEndArray();
+                    writer.WriteEndObject();
+                }
+                writer.WriteEndArray();
 
+            }
+            File.WriteAllText(path, sw.ToString());
+        }
+    }
 
-    private void AddNextProduction()
-    {  
+    private void LoadFromJson()
+    {
+        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem", "", "json");
+
+        // TODO
+        //StandaloneFileBrowser.OpenFilePanel("Save Lsystem to JSON file", "", "json", false)[0];
+        /*
+#if UNITY_EDITOR
+        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem", "", "json");
+#endif*/
+        /*
+#if UNITY_STANDALONE
+        System.Windows.Forms.OpenFileDialog sfd = new System.Windows.Forms.OpenFileDialog();
+        sfd.Filter = "JSON File|*.json";
+        sfd.Title = "Select JSON file containing Lsystem";
+        sfd.ShowDialog();
+        path = sfd.FileName;
+#endif
+*/
+        String myJson;
+        if (path.Length != 0)
+        {
+            myJson = File.ReadAllText(path);
+            DeleteAllProductions();
+            JObject json = JObject.Parse(myJson);
+            startingSequenceInputField.text = json["Starting sequence"].ToString();
+            stepsInputField.text = json["Steps"].ToString();
+
+            JArray productions = JArray.Parse(json["Productions"].ToString());
+
+            foreach(JObject jprod in productions)
+            {
+
+                GameObject prodGO = AddNextProduction(jprod["Before"].ToString(), jprod["Guard"].ToString());
+                JArray afters = JArray.Parse(jprod["Afters"].ToString());
+                foreach(JObject jafter in afters)
+                {
+                    GameObject newAfter = Instantiate(after, prodGO.transform.Find("AftersGrid"));
+                    Button deleteButton = newAfter.transform.Find("DeleteButton").GetComponent<Button>();
+                    deleteButton.onClick.AddListener(delegate { DeleteAfter(newAfter); });
+                    newAfter.transform.Find("Probability/ProbabilityInputField").GetComponent<InputField>().text = jafter["Probability"].ToString();
+                    newAfter.transform.Find("State/StateInputField").GetComponent<InputField>().text = jafter["State"].ToString();
+                }
+            }
+        }
+    }
+
+    private void DeleteAllProductions()
+    {
+        foreach(GameObject prod in productions)
+        {
+            Destroy(prod);
+        }
+        productions = new List<GameObject>();
+    }
+
+    private GameObject AddNextProduction(String before = "", String guard = "")
+    {
         GameObject newProduction = Instantiate(production, productionsGrid.transform);
         productions.Add(newProduction);
         Button deleteButton = newProduction.transform.Find("Header/DeleteButton").GetComponent<Button>();
         deleteButton.onClick.AddListener(delegate { DeleteProduction(newProduction); });
         Button addNextAfterButton = newProduction.transform.Find("Header/AddNextAfterButton").GetComponent<Button>();
         addNextAfterButton.onClick.AddListener(delegate { addNextAfter(newProduction); });
+
+        newProduction.transform.Find("Header/Before/BeforeInputField").GetComponent<InputField>().text = before;
+        newProduction.transform.Find("Header/Guard/GuardInputField").GetComponent<InputField>().text = guard;
+        return newProduction;
     }
 
     private void DeleteProduction(GameObject newProduction)
@@ -81,10 +214,19 @@ public class MenuManager2 : MonoBehaviour
 
     private void StartSimulation()
     {
+        canvas.enabled = false;
+        PassParamtersFromInputs();
+        Scenes.SimulationNumber = 6;
+        StartCoroutine(Scenes.LoadAdditive("main"));
         
+    }
+
+    private void PassParamtersFromInputs()
+    {
         Scenes.StartingSequence = Simulation.GenerateStateFromSting(startingSequenceInputField.text);
         Scenes.Steps = Int32.Parse(stepsInputField.text);
-        foreach(GameObject productionGameObject in productions)
+        Scenes.Productions = new List<Production>();
+        foreach (GameObject productionGameObject in productions)
         {
             char before = productionGameObject.transform.Find("Header/Before/BeforeInputField").GetComponent<InputField>().text[0];
             List<Rule> guards = new List<Rule> { new Rule(productionGameObject.transform.Find("Header/Guard/GuardInputField").GetComponent<InputField>().text) };
@@ -93,44 +235,11 @@ public class MenuManager2 : MonoBehaviour
             {
                 String afterString = afterGameObject.Find("State/StateInputField").GetComponent<InputField>().text;
                 double probability = Double.Parse(afterGameObject.Find("Probability/ProbabilityInputField").GetComponent<InputField>().text);
-                simpleProductions.Add(new SimpleProduction(Simulation.GenerateFutureStateFromSting(afterString),probability));
+                simpleProductions.Add(new SimpleProduction(Simulation.GenerateFutureStateFromSting(afterString), probability));
             }
 
             Scenes.Productions.Add(new Production(guards, before, simpleProductions));
         }
-        Scenes.Load("main");
-
     }
 
-    void StartDrawing(int treeNumber)
-    {
-        switch (treeNumber)
-        {
-            case 1:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.6);
-                Scenes.Parameters.Add("a0", 45);
-                Scenes.Parameters.Add("a2", 45);
-                break;
-            case 2:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.9);
-                Scenes.Parameters.Add("a0", 45);
-                Scenes.Parameters.Add("a2", 45);
-                break;
-            case 3:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.8);
-                Scenes.Parameters.Add("a0", 45);
-                Scenes.Parameters.Add("a2", 45);
-                break;
-            case 4:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.7);
-                Scenes.Parameters.Add("a0", 30);
-                Scenes.Parameters.Add("a2", -30);
-                break;
-        }
-        Scenes.Load("main");
-    }
 }

@@ -15,8 +15,8 @@ public class MenuManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        inputMenuButton.onClick.AddListener(delegate { Scenes.Load("menu2"); });
-        chooseSimulationMenuButton.onClick.AddListener(delegate { Scenes.Load("menu2"); });
+        inputMenuButton.onClick.AddListener(delegate { StartCoroutine(Scenes.Load("menu2")); });
+        chooseSimulationMenuButton.onClick.AddListener(delegate { StartCoroutine(Scenes.Load("menu3")); });
         exitButton.onClick.AddListener(delegate { Application.Quit(); });
 	}
 
