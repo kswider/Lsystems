@@ -34,6 +34,8 @@ public class MenuManager2 : MonoBehaviour
     [SerializeField]
     private Button addNextProductionButton;
     [SerializeField]
+    private Button loadDictionary;
+    [SerializeField]
     private Button loadFromJsonButton;
     [SerializeField]
     private Button saveToJsonButton;
@@ -62,9 +64,42 @@ public class MenuManager2 : MonoBehaviour
         productions = new List<GameObject>();
         addNextProductionButton.onClick.AddListener(delegate { AddNextProduction(); });
         startButton.onClick.AddListener(StartSimulation);
+        loadDictionary.onClick.AddListener(LoadDictionary);
         loadFromJsonButton.onClick.AddListener(LoadFromJson);
         saveToJsonButton.onClick.AddListener(SaveToJson);
         
+    }
+
+    private void LoadDictionary()
+    {
+        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem dictionary", "", "json");
+
+        String myJson;
+        if (path.Length != 0)
+        {
+            Scenes.Dictionary = new SerializableDictionary();
+            myJson = File.ReadAllText(path);
+            JObject json = JObject.Parse(myJson);
+
+            JArray entries = JArray.Parse(json["Dictionary"].ToString());
+            foreach (JObject entry in entries)
+            {
+                String letter = entry["Letter"].ToString();
+                Debug.Log(letter);
+                String command = entry["Command"].ToString();
+                Debug.Log(command);
+                
+                JArray arguments = JArray.Parse(entry["Arguments"].ToString());
+                List<Equation> equations = new List<Equation>();
+                
+                foreach(String argument in arguments.Select(a => (string)a).ToList<String>())
+                {
+                    equations.Add(new Equation(argument));
+                    Debug.Log(argument);
+                }
+                Scenes.Dictionary.Add(letter[0], new FutureCommand(command, equations));
+            }
+        }
     }
 
     private void SaveToJson()
