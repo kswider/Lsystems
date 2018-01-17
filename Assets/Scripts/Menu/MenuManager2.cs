@@ -54,7 +54,7 @@ public class MenuManager2 : MonoBehaviour
     private InputField coneInputField;
     [SerializeField]
     private GameObject fileBrowserPrefab;
-
+    private Animator cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
     private List<GameObject> productions;
     // Use this for initialization
     private Material material;
@@ -86,6 +86,15 @@ public class MenuManager2 : MonoBehaviour
             coneInputField.interactable = false;
         else
             coneInputField.interactable = true;
+
+        //Stopping Camera Animation
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (cameraAnimator.enabled)
+                cameraAnimator.enabled = false;
+            else
+                cameraAnimator.enabled = true;
+        }
     }
 
     private void LoadDictionary()

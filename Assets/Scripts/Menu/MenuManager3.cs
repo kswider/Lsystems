@@ -15,6 +15,7 @@ public class MenuManager3 : MonoBehaviour {
     private Button goBackButton;
     [SerializeField]
     private Canvas canvas;
+    private Animator cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
     // Use this for initialization
     void Start() {
         goBackButton.onClick.AddListener(delegate { SceneManager.LoadScene("menu"); });
@@ -25,10 +26,13 @@ public class MenuManager3 : MonoBehaviour {
 
     void Update()
     {
+        //Stopping Camera Animation
         if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("Pauza");
-            GameObject.Find("Main Camera").GetComponent<Animator>().StopPlayback();
+        {        
+            if (cameraAnimator.enabled)
+                cameraAnimator.enabled = false;
+            else
+                cameraAnimator.enabled = true;
         }
     }
 
