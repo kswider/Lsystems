@@ -299,6 +299,7 @@ public class Simulation
             dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
             dictionary.Add('^', new FutureCommand("Rotate L2", new List<Equation> { new Equation("t0") }));
             dictionary.Add('\\', new FutureCommand("Rotate H", new List<Equation> { new Equation("t0") }));
+            dictionary.Add('/', new FutureCommand("Rotate H2", new List<Equation> { new Equation("t0") }));
 
         }
         else if (egNum == 6)
@@ -323,6 +324,7 @@ public class Simulation
                 dictionary.Add('^', new FutureCommand("Rotate L2", new List<Equation> { new Equation("t0") }));
                 dictionary.Add('\\', new FutureCommand("Rotate H", new List<Equation> { new Equation("t0") }));
                 dictionary.Add('/', new FutureCommand("Rotate H2", new List<Equation> { new Equation("t0") }));
+
             }
         }
         else
