@@ -82,7 +82,6 @@ public class MenuManager2 : MonoBehaviour
 
     void Update()
     {
-        Debug.Log("Update");
         if (cyllinderToggle.isOn)
             coneInputField.interactable = false;
         else
