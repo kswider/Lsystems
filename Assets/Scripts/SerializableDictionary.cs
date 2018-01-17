@@ -5,6 +5,7 @@ using UnityEngine;
 [Serializable]
 public class SerializableDictionary : Dictionary<Char, FutureCommand>, ISerializationCallbackReceiver
 {
+
     [UnityEngine.SerializeField]
     private List<Char> keys = new List<Char>();
 
@@ -34,4 +35,20 @@ public class SerializableDictionary : Dictionary<Char, FutureCommand>, ISerializ
         for (int i = 0; i < keys.Count; i++)
             this.Add(keys[i], values[i]);
     }
+
+    public FutureCommand GetOrElse(Char letter, FutureCommand fc)
+    {
+        try
+        {
+            FutureCommand listing = this[letter];
+            return listing;
+        }
+        catch (KeyNotFoundException)
+        {
+            FutureCommand listing = new FutureCommand("Do nothing", new List<Equation>());
+            return listing;
+        }
+    }
+
+
 }
