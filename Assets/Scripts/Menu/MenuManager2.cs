@@ -238,7 +238,7 @@ public class MenuManager2 : MonoBehaviour
         canvas.enabled = false;
         PassParamtersFromInputs();
         Scenes.SimulationNumber = 6;
-        StartCoroutine(Scenes.LoadAdditive("main"));
+        StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main"));
         
     }
 

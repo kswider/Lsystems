@@ -72,7 +72,8 @@ public class MenuManager3 : MonoBehaviour {
         canvas.enabled = false;
         Scenes.SimulationNumber = 5;
         Scenes.Steps = 10;
-        StartCoroutine(Scenes.LoadAdditive("main"));
+
+        StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main"));
         
     }
 

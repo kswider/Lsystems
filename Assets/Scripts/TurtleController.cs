@@ -33,6 +33,7 @@ public class TurtleController : MonoBehaviour
         lastPosition = new Vector3(0, 0, 0);
         Stack<Vector3> positionStack = new Stack<Vector3>();
         Stack<Orientation> orientationStack = new Stack<Orientation>();
+        Stack<float> scaleStack = new Stack<float>();
         scale = 1;
         orientation = new Orientation();
         material = Resources.Load("Materials/Barks/bark02", typeof(Material)) as Material;
@@ -55,56 +56,58 @@ public class TurtleController : MonoBehaviour
         foreach (Command command in commands)
         {
 
-            switch (command.GetCommandName())
-            {
-                // 3D
-                case "Forward":
-                    newPosition = lastPosition;
-                    newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
-                    DrawLine(lastPosition, newPosition);
-                    lastPosition = newPosition;
-                    break;
-                case "Rotate U":
-                    delta = (float)command.GetParameters()[0];
-                    orientation.RotateU(delta);
-                    break;
-                case "Rotate U2":
-                    delta = -(float)command.GetParameters()[0];
-                    orientation.RotateU(delta);
-                    break;
-                case "Rotate L":
-                    delta = (float)command.GetParameters()[0];
-                    orientation.RotateL(delta);
-                    break;
-                case "Rotate L2":
-                    delta = -(float)command.GetParameters()[0];
-                    orientation.RotateL(delta);
-                    break;
-                case "Rotate H":
-                    delta = (float)command.GetParameters()[0];
-                    orientation.RotateH(delta);
-                    break;
-                case "Rotate H2":
-                    delta = -(float)command.GetParameters()[0];
-                    orientation.RotateH(delta);
-                    break;
-                case "Dollar rotation":
-                    orientation.DollarRotation();
-                    break;
-                case "Push position":
-                    positionStack.Push(lastPosition);
-                    orientationStack.Push(new Orientation(orientation));
-                    break;
-                case "Pull position":
-                    lastPosition = positionStack.Pop();
-                    orientation = orientationStack.Pop();
-                    break;
-                case "Change width":
-                    scale = (float)command.GetParameters()[0] / 10;
-                    break;
+                switch (command.GetCommandName())
+                {
+                    // 3D
+                    case "Forward":
+                        newPosition = lastPosition;
+                        newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
+                        DrawLine(lastPosition, newPosition);
+                        lastPosition = newPosition;
+                        break;
+                    case "Rotate U":
+                        delta = (float)command.GetParameters()[0];
+                        orientation.RotateU(delta);
+                        break;
+                    case "Rotate U2":
+                        delta = -(float)command.GetParameters()[0];
+                        orientation.RotateU(delta);
+                        break;
+                    case "Rotate L":
+                        delta = (float)command.GetParameters()[0];
+                        orientation.RotateL(delta);
+                        break;
+                    case "Rotate L2":
+                        delta = -(float)command.GetParameters()[0];
+                        orientation.RotateL(delta);
+                        break;
+                    case "Rotate H":
+                        delta = (float)command.GetParameters()[0];
+                        orientation.RotateH(delta);
+                        break;
+                    case "Rotate H2":
+                        delta = -(float)command.GetParameters()[0];
+                        orientation.RotateH(delta);
+                        break;
+                    case "Dollar rotation":
+                        orientation.DollarRotation();
+                        break;
+                    case "Push position":
+                        positionStack.Push(lastPosition);
+                        orientationStack.Push(new Orientation(orientation));
+                        scaleStack.Push(scale);
+                        break;
+                    case "Pull position":
+                        lastPosition = positionStack.Pop();
+                        orientation = orientationStack.Pop();
+                        scale = scaleStack.Pop();
+                        break;
+                    case "Change width":
+                        scale = (float)command.GetParameters()[0] / 10;
+                        break;
+                }
 
-
-            }
+            
             /* 2D
             switch (command.CommandName)
             {
