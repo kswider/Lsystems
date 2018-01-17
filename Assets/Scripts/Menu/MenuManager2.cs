@@ -9,7 +9,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine.SceneManagement;
 using SFB;
-using UnityEditor;
+using System.Collections;
+//using UnityEditor;
 //using System.Runtime.InteropServices;
 
 
@@ -22,7 +23,7 @@ public class MenuManager2 : MonoBehaviour
     private static extern void OpenFileDialog();
     */
     [SerializeField]
-    private Button goBackButton;
+    private UnityEngine.UI.Button goBackButton;
     [SerializeField]
     private Canvas canvas;
     [SerializeField]
@@ -30,15 +31,15 @@ public class MenuManager2 : MonoBehaviour
     [SerializeField]
     private InputField stepsInputField;
     [SerializeField]
-    private Button startButton;
+    private UnityEngine.UI.Button startButton;
     [SerializeField]
-    private Button addNextProductionButton;
+    private UnityEngine.UI.Button addNextProductionButton;
     [SerializeField]
-    private Button loadDictionary;
+    private UnityEngine.UI.Button loadDictionary;
     [SerializeField]
-    private Button loadFromJsonButton;
+    private UnityEngine.UI.Button loadFromJsonButton;
     [SerializeField]
-    private Button saveToJsonButton;
+    private UnityEngine.UI.Button saveToJsonButton;
     [SerializeField]
     private GameObject productionsGrid;
     [SerializeField]
@@ -51,6 +52,8 @@ public class MenuManager2 : MonoBehaviour
     private Toggle coneToggle;
     [SerializeField]
     private InputField coneInputField;
+    [SerializeField]
+    private GameObject fileBrowserPrefab;
 
     private List<GameObject> productions;
     // Use this for initialization
@@ -87,8 +90,7 @@ public class MenuManager2 : MonoBehaviour
 
     private void LoadDictionary()
     {
-        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem dictionary", "", "json");
-
+        String path = StandaloneFileBrowser.OpenFilePanel("Load Dictionary for your Lsystem", "", "json", false)[0];
         String myJson;
         if (path.Length != 0)
         {
@@ -117,23 +119,10 @@ public class MenuManager2 : MonoBehaviour
         }
     }
 
+    
     private void SaveToJson()
     {
-        String path = EditorUtility.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
-        // TODO
-        //StandaloneFileBrowser.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
-        /*
-#if UNITY_EDITOR
-        path = EditorUtility.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
-#endif*/
-        /*
-#if UNITY_STANDALONE
-        System.Windows.Forms.SaveFileDialog sfd = new System.Windows.Forms.SaveFileDialog();
-        sfd.Filter = "JSON File|*.json";
-        sfd.Title = "Save Lsystem to JSON file";
-        sfd.ShowDialog();
-        path = sfd.FileName;
-#endif*/
+        String path = StandaloneFileBrowser.SaveFilePanel("Save Lsystem to JSON file", "", "MyLsystem.json", "json");
         if (path.Length != 0)
         {
             StringBuilder sb = new StringBuilder();
@@ -177,23 +166,7 @@ public class MenuManager2 : MonoBehaviour
 
     private void LoadFromJson()
     {
-        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem", "", "json");
-
-        // TODO
-        //StandaloneFileBrowser.OpenFilePanel("Save Lsystem to JSON file", "", "json", false)[0];
-        /*
-#if UNITY_EDITOR
-        String path = EditorUtility.OpenFilePanel("Select JSON file containing Lsystem", "", "json");
-#endif*/
-        /*
-#if UNITY_STANDALONE
-        System.Windows.Forms.OpenFileDialog sfd = new System.Windows.Forms.OpenFileDialog();
-        sfd.Filter = "JSON File|*.json";
-        sfd.Title = "Select JSON file containing Lsystem";
-        sfd.ShowDialog();
-        path = sfd.FileName;
-#endif
-*/
+        String path = StandaloneFileBrowser.OpenFilePanel("Select JSON file containing Lsystem", "", "json", false)[0];
         String myJson;
         if (path.Length != 0)
         {
@@ -270,6 +243,7 @@ public class MenuManager2 : MonoBehaviour
         StartCoroutine(Scenes.LoadAdditive("main"));
         
     }
+
 
     private void PassParamtersFromInputs()
     {

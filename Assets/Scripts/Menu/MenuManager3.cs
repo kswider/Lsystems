@@ -22,6 +22,16 @@ public class MenuManager3 : MonoBehaviour {
         simulation2Button.onClick.AddListener(delegate { StartDrawing(2); });
         simulation3Button.onClick.AddListener(delegate { StartDrawing(4); });
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("Pauza");
+            GameObject.Find("Main Camera").GetComponent<Animator>().StopPlayback();
+        }
+    }
+
     void StartDrawing(int treeNumber)
     {
         Scenes.Parameters = new Dictionary<string, double>();

@@ -60,32 +60,20 @@ public class TurtleController : MonoBehaviour
                 // 3D
                 case "Forward":
                     newPosition = lastPosition;
-                    if (command.GetParameters().Any())
-                        newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
-                    else
-                        newPosition += orientation.H * 2;
+                    newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
                     DrawLine(lastPosition, newPosition);
                     lastPosition = newPosition;
                     break;
                 case "Rotate U":
-                    if (command.GetParameters().Any())
-                        delta = (float)command.GetParameters()[0];
-                    else
-                        delta = 90;
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateU(delta);
                     break;
                 case "Rotate L":
-                    if (command.GetParameters().Any())
-                        delta = (float)command.GetParameters()[0];
-                    else
-                        delta = 90;
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateL(delta);
                     break;
                 case "Rotate H":
-                    if (command.GetParameters().Any())
-                        delta = (float)command.GetParameters()[0];
-                    else
-                        delta = 90;
+                    delta = (float)command.GetParameters()[0];
                     orientation.RotateH(delta);
                     break;
                 case "Dollar rotation":

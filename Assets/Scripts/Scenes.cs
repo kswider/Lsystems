@@ -30,5 +30,4 @@ public static class Scenes
             yield return null;
         }
     }
-
 }

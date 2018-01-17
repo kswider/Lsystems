@@ -301,7 +301,6 @@ public class Simulation
             dictionary.Add('\\', new FutureCommand("Rotate H", new List<Equation> { new Equation("t0") }));
             dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("(-1)*t0") }));
 
-
         }
         else if (egNum == 6)
         {
