@@ -54,7 +54,7 @@ public class MenuManager2 : MonoBehaviour
     private InputField coneInputField;
     [SerializeField]
     private GameObject fileBrowserPrefab;
-    private Animator cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
+    private Animator cameraAnimator;
     private List<GameObject> productions;
     // Use this for initialization
     private Material material;
@@ -76,7 +76,8 @@ public class MenuManager2 : MonoBehaviour
         loadDictionary.onClick.AddListener(LoadDictionary);
         loadFromJsonButton.onClick.AddListener(LoadFromJson);
         saveToJsonButton.onClick.AddListener(SaveToJson);
-        
+        cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
+
     }
 
     void Update()

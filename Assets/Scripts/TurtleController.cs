@@ -35,7 +35,7 @@ public class TurtleController : MonoBehaviour
         Stack<Orientation> orientationStack = new Stack<Orientation>();
         scale = 1;
         orientation = new Orientation();
-        material = Resources.Load("Materials/Barks/Bark_b9", typeof(Material)) as Material;
+        material = Resources.Load("Materials/Barks/bark02", typeof(Material)) as Material;
         /* it was used for 2D trees
         private Orientation orientation;
         direction = new Vector3(0,1,0);
@@ -68,11 +68,23 @@ public class TurtleController : MonoBehaviour
                     delta = (float)command.GetParameters()[0];
                     orientation.RotateU(delta);
                     break;
+                case "Rotate U2":
+                    delta = (float)command.GetParameters()[0];
+                    orientation.RotateU(delta);
+                    break;
                 case "Rotate L":
                     delta = (float)command.GetParameters()[0];
                     orientation.RotateL(delta);
                     break;
+                case "Rotate L2":
+                    delta = (float)command.GetParameters()[0];
+                    orientation.RotateL(delta);
+                    break;
                 case "Rotate H":
+                    delta = (float)command.GetParameters()[0];
+                    orientation.RotateH(delta);
+                    break;
+                case "Rotate H2":
                     delta = (float)command.GetParameters()[0];
                     orientation.RotateH(delta);
                     break;

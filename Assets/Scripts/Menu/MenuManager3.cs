@@ -15,13 +15,14 @@ public class MenuManager3 : MonoBehaviour {
     private Button goBackButton;
     [SerializeField]
     private Canvas canvas;
-    private Animator cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
+    private Animator cameraAnimator;
     // Use this for initialization
     void Start() {
         goBackButton.onClick.AddListener(delegate { SceneManager.LoadScene("menu"); });
         simulation1Button.onClick.AddListener(delegate { StartDrawing(1); });
         simulation2Button.onClick.AddListener(delegate { StartDrawing(2); });
         simulation3Button.onClick.AddListener(delegate { StartDrawing(4); });
+        cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
     }
 
     void Update()
