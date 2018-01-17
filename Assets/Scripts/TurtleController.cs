@@ -69,7 +69,7 @@ public class TurtleController : MonoBehaviour
                     orientation.RotateU(delta);
                     break;
                 case "Rotate U2":
-                    delta = (float)command.GetParameters()[0];
+                    delta = -(float)command.GetParameters()[0];
                     orientation.RotateU(delta);
                     break;
                 case "Rotate L":
@@ -77,7 +77,7 @@ public class TurtleController : MonoBehaviour
                     orientation.RotateL(delta);
                     break;
                 case "Rotate L2":
-                    delta = (float)command.GetParameters()[0];
+                    delta = -(float)command.GetParameters()[0];
                     orientation.RotateL(delta);
                     break;
                 case "Rotate H":
@@ -85,7 +85,7 @@ public class TurtleController : MonoBehaviour
                     orientation.RotateH(delta);
                     break;
                 case "Rotate H2":
-                    delta = (float)command.GetParameters()[0];
+                    delta = -(float)command.GetParameters()[0];
                     orientation.RotateH(delta);
                     break;
                 case "Dollar rotation":
