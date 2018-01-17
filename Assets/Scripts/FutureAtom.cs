@@ -46,7 +46,6 @@ public class FutureAtom
     /// <returns>Result FutureAtom or null if pattern doesnt match the string</returns>
     public static FutureAtom GenerateFutureAtomFromString(String atomStr)
     {
-        Debug.Log(atomStr);
         if ((atomStr.Length > 1 && atomStr[1] == '(' && atomStr.Last() == ')'))
         {
             String[] equationsStrArray = atomStr.Substring(2, atomStr.Length - 3).Split(',');
@@ -58,10 +57,6 @@ public class FutureAtom
                 nParams.Add(new Equation(equationsStrArray[i]));
             }
 
-            foreach (Equation eq in nParams)
-            {
-                Debug.Log(eq.equation);
-            }
             return new FutureAtom(atomStr[0], nParams);
         }
         else if (atomStr.Length == 1)
