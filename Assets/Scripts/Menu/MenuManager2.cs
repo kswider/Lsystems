@@ -60,15 +60,6 @@ public class MenuManager2 : MonoBehaviour
     private Material material;
     void Start()
     {
-        //Use something like this to generate after state
-        Simulation.GenerateFutureStateFromSting("A(2)B(3,4)C(t0+4)D(t0,t1+5)E+(12)-");
-
-        //Use something like this to generate start state
-        Simulation.GenerateStateFromSting("A(2,3)BC(3)");
-
-        //Use something like this to serialize simulation
-        Debug.Log(JsonUtility.ToJson(new Simulation(4)));
-
         goBackButton.onClick.AddListener(delegate { SceneManager.LoadScene("menu"); });
         productions = new List<GameObject>();
         addNextProductionButton.onClick.AddListener(delegate { AddNextProduction(); });

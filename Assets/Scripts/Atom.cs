@@ -39,11 +39,12 @@ using UnityEngine;
     /// <returns>Result Atom or null if pattern doesnt match the string</returns>
     public static Atom GenerateAtomFromString(String atomStr)
     {
-        String pattern = @"^[A-Z](\([0-9]+(\.[0-9]+)?(,[0-9]+(\.[0-9]*)?)*\))?$";
+        Debug.Log(atomStr);
+        String pattern = @"^.(\([0-9]+(\.[0-9]+)?(,[0-9]+(\.[0-9]*)?)*\))?$";
         Regex regex = new Regex(pattern, RegexOptions.None);
         Match m = regex.Match(atomStr);
 
-        if(atomStr.Length == 1)
+        if (atomStr.Length == 1)
         {
             return new Atom(atomStr[0], new List<double>());
         }
@@ -79,7 +80,10 @@ using UnityEngine;
             }
             return new Atom(letter.ToString()[0], nParams);
         }
-        else return null;
+        else
+        {
+            return null;
+        }
     }
 
 

@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
-    /// <summary>
-    /// Class representing production with features such as probability, guard and parameters.
-    /// </summary>
-    [Serializable]
+/// <summary>
+/// Class representing production with features such as probability, guard and parameters.
+/// </summary>
+[Serializable]
     public class Production
     {
 
@@ -56,7 +57,7 @@ using System.Text;
         /// <returns>List of Atoms produced by this porduction</returns>
         public List<Atom> getAfter(List<Double> parameters)
         {
-            Random random = new Random();
+            System.Random random = new System.Random();
             Double randDouble = random.NextDouble();
             Double acc = 0;
             List<Atom> ret = new List<Atom>();
@@ -85,6 +86,7 @@ using System.Text;
         {
             Boolean isOK = false;
 
+            Debug.Log(atom.GetLetter());
             for(int i=0; i < GetGuards().Count(); i++)
             {
                 if (atom.GetLetter() == GetBefore() && GetGuards()[i].apply(atom.GetParameters()))
