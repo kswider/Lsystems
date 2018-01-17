@@ -52,8 +52,6 @@ public class MenuManager2 : MonoBehaviour
     private Toggle coneToggle;
     [SerializeField]
     private InputField coneInputField;
-    [SerializeField]
-    private GameObject fileBrowserPrefab;
     private Animator cameraAnimator;
     private List<GameObject> productions;
     // Use this for initialization
