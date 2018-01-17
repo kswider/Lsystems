@@ -439,8 +439,8 @@ public class Simulation
             foreach (Atom atom in currState)
             {
                 Debug.Log(atom.GetLetter());
-                FutureCommand listing = dictionary[atom.GetLetter()];
-                ret.Add(listing.evaluate(atom.GetParameters()));
+            FutureCommand listing = dictionary.GetOrElse(atom.GetLetter(),new FutureCommand("do nothing",new List<Equation>()));
+            ret.Add(listing.evaluate(atom.GetParameters()));
             }
 
             return ret;
