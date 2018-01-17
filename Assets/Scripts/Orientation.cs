@@ -36,8 +36,8 @@ using UnityEngine;
 
         public void RotateH(float delta)
         {
-            L = Quaternion.AngleAxis(-delta, H) * L;
-            U = Quaternion.AngleAxis(-delta, H) * U;
+            L = Quaternion.AngleAxis(delta, H) * L;
+            U = Quaternion.AngleAxis(delta, H) * U;
         }
         public void DollarRotation()
         {
