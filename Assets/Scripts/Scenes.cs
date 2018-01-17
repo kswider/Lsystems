@@ -12,6 +12,8 @@ public static class Scenes
     public static Dictionary<string, double> Parameters { get; set; }
     public static List<Production> Productions { get; set; }
     public static SerializableDictionary Dictionary { get; set; }
+    public static int DrawingApproach { get; set; }
+    public static float WidthDecreaseRate { get; set; }
     public static IEnumerator Load(string sceneName)
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);

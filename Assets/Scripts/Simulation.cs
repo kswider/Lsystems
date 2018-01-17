@@ -316,10 +316,13 @@ public class Simulation
                 dictionary.Add('!', new FutureCommand("Change width", new List<Equation> { new Equation("t0") }));
                 dictionary.Add('+', new FutureCommand("Rotate U", new List<Equation> { new Equation("t0") }));
                 dictionary.Add('-', new FutureCommand("Rotate U", new List<Equation> { new Equation("(-1)*t0") }));
+                dictionary.Add('|', new FutureCommand("Rotate U", new List<Equation> { new Equation("180") }));
                 dictionary.Add('[', new FutureCommand("Push position", new List<Equation>()));
                 dictionary.Add(']', new FutureCommand("Pull position", new List<Equation>()));
                 dictionary.Add('$', new FutureCommand("Dollar rotation", new List<Equation>()));
                 dictionary.Add('&', new FutureCommand("Rotate L", new List<Equation> { new Equation("t0") }));
+                dictionary.Add('^', new FutureCommand("Rotate L", new List<Equation> { new Equation("(-1)*t0") }));
+                dictionary.Add('\\', new FutureCommand("Rotate H", new List<Equation> { new Equation("(-1)*t0") }));
                 dictionary.Add('/', new FutureCommand("Rotate H", new List<Equation> { new Equation("(-1)*t0") }));
                 dictionary.Add('C', new FutureCommand("Do nothing", new List<Equation>()));
                 dictionary.Add('A', new FutureCommand("Do nothing", new List<Equation>()));

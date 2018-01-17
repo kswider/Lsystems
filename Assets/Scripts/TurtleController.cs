@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class TurtleController : MonoBehaviour
 {
@@ -59,20 +60,32 @@ public class TurtleController : MonoBehaviour
                 // 3D
                 case "Forward":
                     newPosition = lastPosition;
-                    newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
+                    if (command.GetParameters().Any())
+                        newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
+                    else
+                        newPosition += orientation.H * 2;
                     DrawLine(lastPosition, newPosition);
                     lastPosition = newPosition;
                     break;
                 case "Rotate U":
-                    delta = (float)command.GetParameters()[0];
+                    if (command.GetParameters().Any())
+                        delta = (float)command.GetParameters()[0];
+                    else
+                        delta = 90;
                     orientation.RotateU(delta);
                     break;
                 case "Rotate L":
-                    delta = (float)command.GetParameters()[0];
+                    if (command.GetParameters().Any())
+                        delta = (float)command.GetParameters()[0];
+                    else
+                        delta = 90;
                     orientation.RotateL(delta);
                     break;
                 case "Rotate H":
-                    delta = (float)command.GetParameters()[0];
+                    if (command.GetParameters().Any())
+                        delta = (float)command.GetParameters()[0];
+                    else
+                        delta = 90;
                     orientation.RotateH(delta);
                     break;
                 case "Dollar rotation":
@@ -158,31 +171,33 @@ public class TurtleController : MonoBehaviour
     private void DrawLine(Vector3 lastPosition, Vector3 newPosition)
     {
         // Cylinder approach
-        /*
-        GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        cylinder.transform.parent = gameObject.transform;
-        cylinder.GetComponent<MeshRenderer>().material = material;
-        float distance = Vector3.Distance(newPosition,lastPosition);
-        Vector3 newScale = cylinder.transform.localScale;
-        newScale.y = distance/2;
-        newScale.x = scale;
-        newScale.z = scale;
-        cylinder.transform.localScale = newScale;
-        cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
-        cylinder.transform.up = newPosition - lastPosition;
-        */
+        if (Scenes.DrawingApproach == 0)
+        {
+            GameObject cylinder = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            cylinder.transform.parent = gameObject.transform;
+            cylinder.GetComponent<MeshRenderer>().material = material;
+            float distance = Vector3.Distance(newPosition, lastPosition);
+            Vector3 newScale = cylinder.transform.localScale;
+            newScale.y = distance / 2;
+            newScale.x = scale;
+            newScale.z = scale;
+            cylinder.transform.localScale = newScale;
+            cylinder.transform.position = Vector3.Lerp(lastPosition, newPosition, 0.5f);
+            cylinder.transform.up = newPosition - lastPosition;
+        }
 
         // Cone approach
-        
-        GameObject cone = CreateCone.Create(1, scale, scale * 0.707f);
-        cone.transform.parent = gameObject.transform;
-        cone.GetComponent<MeshRenderer>().material = material;       
-        Vector3 newScale = cone.transform.localScale;
-        newScale.y = Vector3.Distance(lastPosition, newPosition);        
-        cone.transform.localScale = newScale;
-        cone.transform.position = lastPosition;
-        cone.transform.up = newPosition - lastPosition ;
-        
+        else
+        {
+            GameObject cone = CreateCone.Create(1, scale, scale * Scenes.WidthDecreaseRate);
+            cone.transform.parent = gameObject.transform;
+            cone.GetComponent<MeshRenderer>().material = material;
+            Vector3 newScale = cone.transform.localScale;
+            newScale.y = Vector3.Distance(lastPosition, newPosition);
+            cone.transform.localScale = newScale;
+            cone.transform.position = lastPosition;
+            cone.transform.up = newPosition - lastPosition;
+        }
 
     }
 }

@@ -52,6 +52,8 @@ public class MenuManager3 : MonoBehaviour {
                 Scenes.Parameters.Add("a2", -30);
                 break;
         }
+        Scenes.DrawingApproach = 1;
+        Scenes.WidthDecreaseRate = 0.707f;
         canvas.enabled = false;
         Scenes.SimulationNumber = 5;
         Scenes.Steps = 10;

@@ -45,6 +45,12 @@ public class MenuManager2 : MonoBehaviour
     private GameObject production;
     [SerializeField]
     private GameObject after;
+    [SerializeField]
+    private Toggle cyllinderToggle;
+    [SerializeField]
+    private Toggle coneToggle;
+    [SerializeField]
+    private InputField coneInputField;
 
     private List<GameObject> productions;
     // Use this for initialization
@@ -68,6 +74,15 @@ public class MenuManager2 : MonoBehaviour
         loadFromJsonButton.onClick.AddListener(LoadFromJson);
         saveToJsonButton.onClick.AddListener(SaveToJson);
         
+    }
+
+    void Update()
+    {
+        Debug.Log("Update");
+        if (cyllinderToggle.isOn)
+            coneInputField.interactable = false;
+        else
+            coneInputField.interactable = true;
     }
 
     private void LoadDictionary()
@@ -274,6 +289,16 @@ public class MenuManager2 : MonoBehaviour
             }
 
             Scenes.Productions.Add(new Production(guards, before, simpleProductions));
+        }
+
+        if (cyllinderToggle.isOn)
+        {
+            Scenes.DrawingApproach = 0;
+        }
+        else
+        {
+            Scenes.DrawingApproach = 1;
+            Scenes.WidthDecreaseRate = (float)Double.Parse(coneInputField.text);
         }
     }
 
