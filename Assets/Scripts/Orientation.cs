@@ -44,6 +44,13 @@ using UnityEngine;
             Vector3 V = new Vector3(0, 1, 0);
             L = Vector3.Scale(V, H) / Vector3.Scale(V, H).magnitude;
             U = Vector3.Scale(H, L);
-    }
-    
+        }
+    /*TODO
+        public void RotationCorrection(Vector3 startingPoint)
+        {
+            float alfa = 0.40f * Vector3.Magnitude(Vector3.Scale(H, new Vector3(-0.61f, 0.77f, -0.19f)));
+            H = Quaternion.AngleAxis(alfa, H) * H;
+            
+        }
+        */
 }

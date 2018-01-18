@@ -52,6 +52,12 @@ public class MenuManager2 : MonoBehaviour
     private Toggle coneToggle;
     [SerializeField]
     private InputField coneInputField;
+    [SerializeField]
+    private Toggle lastStateToggle;
+    [SerializeField]
+    private Toggle smoothAnimationToggle;
+    [SerializeField]
+    private InputField timeBetweenFramesInputField;
     private Animator cameraAnimator;
     private List<GameObject> productions;
     // Use this for initialization
@@ -75,6 +81,10 @@ public class MenuManager2 : MonoBehaviour
             coneInputField.interactable = false;
         else
             coneInputField.interactable = true;
+        if (lastStateToggle.isOn)
+            timeBetweenFramesInputField.interactable = false;
+        else
+            timeBetweenFramesInputField.interactable = true;
 
         //Stopping Camera Animation
         if (Input.GetKeyDown(KeyCode.P))
@@ -238,7 +248,10 @@ public class MenuManager2 : MonoBehaviour
         canvas.enabled = false;
         PassParamtersFromInputs();
         Scenes.SimulationNumber = 6;
-        StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main"));
+        if(lastStateToggle.isOn)
+            StartCoroutine(Scenes.LoadAdditive("main"));
+        else
+            StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main",Double.Parse(timeBetweenFramesInputField.text)));
         
     }
 

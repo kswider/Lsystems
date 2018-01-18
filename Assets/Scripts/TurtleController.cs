@@ -64,7 +64,9 @@ public class TurtleController : MonoBehaviour
                         newPosition += orientation.H * ((float)command.GetParameters()[0] * 2);
                         DrawLine(lastPosition, newPosition);
                         lastPosition = newPosition;
-                        break;
+                        // TODO
+                        //orientation.RotationCorrection(lastPosition);
+                    break;
                     case "Rotate U":
                         delta = (float)command.GetParameters()[0];
                         orientation.RotateU(delta);

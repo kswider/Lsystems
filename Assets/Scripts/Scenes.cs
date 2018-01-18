@@ -32,22 +32,26 @@ public static class Scenes
         }
     }
 
-    public static IEnumerator LoadAdditiveGoThroughEachStep(string sceneName)
+    public static IEnumerator LoadAdditiveGoThroughEachStep(string sceneName,double timeBetweenFrames)
     {
         int repeat = Scenes.Steps;
         for (int i = 1; i <= repeat; i++)
         {
             Scenes.Steps = i;
             AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
             while (!async.isDone)
             {
                 yield return null;
             }
+            if(i<repeat)
+                GameObject.Find("Canvas/GoBackButton").SetActive(false);
             if (i>1)
                 SceneManager.UnloadSceneAsync("main");
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds((float)timeBetweenFrames);
             
         }
+
 
     }
 }

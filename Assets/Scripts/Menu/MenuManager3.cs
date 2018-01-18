@@ -21,7 +21,7 @@ public class MenuManager3 : MonoBehaviour {
         goBackButton.onClick.AddListener(delegate { SceneManager.LoadScene("menu"); });
         simulation1Button.onClick.AddListener(delegate { StartDrawing(1); });
         simulation2Button.onClick.AddListener(delegate { StartDrawing(2); });
-        simulation3Button.onClick.AddListener(delegate { StartDrawing(4); });
+        simulation3Button.onClick.AddListener(delegate { StartDrawing(3); });
         cameraAnimator = GameObject.Find("Main Camera").GetComponent<Animator>();
     }
 
@@ -47,33 +47,36 @@ public class MenuManager3 : MonoBehaviour {
                 Scenes.Parameters.Add("r2", 0.6);
                 Scenes.Parameters.Add("a0", 45);
                 Scenes.Parameters.Add("a2", 45);
+                Scenes.DrawingApproach = 1;
+                Scenes.WidthDecreaseRate = 0.707f;
+                canvas.enabled = false;
+                Scenes.SimulationNumber = 5;
+                Scenes.Steps = 10;
+                StartCoroutine(Scenes.LoadAdditive("main"));
                 break;
             case 2:
                 Scenes.Parameters.Add("r1", 0.9);
                 Scenes.Parameters.Add("r2", 0.9);
                 Scenes.Parameters.Add("a0", 45);
                 Scenes.Parameters.Add("a2", 45);
+                Scenes.DrawingApproach = 1;
+                Scenes.WidthDecreaseRate = 0.707f;
+                canvas.enabled = false;
+                Scenes.SimulationNumber = 5;
+                Scenes.Steps = 10;
+                StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main", 3));
                 break;
             case 3:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.8);
-                Scenes.Parameters.Add("a0", 45);
-                Scenes.Parameters.Add("a2", 45);
-                break;
-            case 4:
-                Scenes.Parameters.Add("r1", 0.9);
-                Scenes.Parameters.Add("r2", 0.7);
-                Scenes.Parameters.Add("a0", 30);
-                Scenes.Parameters.Add("a2", -30);
+                Scenes.DrawingApproach = 0;
+                canvas.enabled = false;
+                Scenes.SimulationNumber = 4;
+                Scenes.Steps = 6;
+                StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main", 3));
                 break;
         }
-        Scenes.DrawingApproach = 1;
-        Scenes.WidthDecreaseRate = 0.707f;
-        canvas.enabled = false;
-        Scenes.SimulationNumber = 5;
-        Scenes.Steps = 10;
+        
 
-        StartCoroutine(Scenes.LoadAdditiveGoThroughEachStep("main"));
+        
         
     }
 
