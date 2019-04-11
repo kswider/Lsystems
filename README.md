@@ -13,3 +13,11 @@ If you want to check our application, you have to:
 There are some premade rules for creating trees in json files so you can load them in app to see how rules should be made.
 
 We will be happy if you try our application and give us some feedback about it.
+
+Screenshots from app:
+
+![alt text](https://github.com/kswider/Lsystems/blob/master/Screenshots/1.png)
+![alt text](https://github.com/kswider/Lsystems/blob/master/Screenshots/2.png)
+![alt text](https://github.com/kswider/Lsystems/blob/master/Screenshots/3.png)
+![alt text](https://github.com/kswider/Lsystems/blob/master/Screenshots/4.png)
+![alt text](https://github.com/kswider/Lsystems/blob/master/Screenshots/5.png)
